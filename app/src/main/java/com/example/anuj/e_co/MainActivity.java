@@ -17,6 +17,8 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.GestureDetector;
+import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -33,6 +35,7 @@ import com.example.anuj.e_co.DatabaseTransaction.PersonDatabaseHelper;
 import com.example.anuj.e_co.EcoService.BatteryService;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
+import com.yalantis.phoenix.PullToRefreshView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -55,6 +58,9 @@ public class MainActivity extends AppCompatActivity {
     private IntentIntegrator qrScan;
 
     public Toolbar toolbar;
+    private static final int SWIPE_MIN_DISTANCE = 120;
+    private static final int SWIPE_MAX_OFF_PATH = 250;
+    private static final int SWIPE_THRESHOLD_VELOCITY = 200;
 
     private PersonDatabaseHelper databaseHelper;
 
@@ -95,8 +101,6 @@ public class MainActivity extends AppCompatActivity {
         if (ContextCompat.checkSelfPermission(MainActivity.this, android.Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(MainActivity.this, new String[]{android.Manifest.permission.CALL_PHONE},1);
         }
-
-
 
 
         Toast.makeText(getApplicationContext(),named,Toast.LENGTH_SHORT).show();
