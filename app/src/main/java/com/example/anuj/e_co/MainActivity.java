@@ -78,11 +78,13 @@ public class MainActivity extends AppCompatActivity {
     private static final int REQUEST_SELECT_PLACE = 1000;
 
 
-    public String named="";
+    public String named="User";
     public int seeds = 0,amount=0;
 
     public String currentDateTime;
     public  TextView homestat;
+
+    int tryname=0;
 
 
     private TextToSpeech tts;
@@ -91,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
     private SharedPreferences preferences;
     private SharedPreferences.Editor editor;
     private static final String PREFS = "prefs";
-    private static final String NEW = "new";
+    private static final String SEEDS = "seed";
     private static final String NAME = "name";
     private static final String AGE = "age";
     private static final String AS_NAME = "as_name";
@@ -131,6 +133,7 @@ public class MainActivity extends AppCompatActivity {
                         Log.e("TTS", "This Language is not supported");
                     }
                     speak("Hello");
+
 
                 } else {
                     Log.e("TTS", "Initilization Failed!");
@@ -321,9 +324,11 @@ public class MainActivity extends AppCompatActivity {
     public void func(View view)
     {
         if(seeds-100>=0) {
+            load();
             seeds=seeds-100;
             Toast.makeText(MainActivity.this, "You bought card", Toast.LENGTH_SHORT).show();
             databaseHelper.insertData("Bought a card", currentDateTime);
+            store();
         }
         else
             Toast.makeText(MainActivity.this, "You don't have enough credits for this transaction", Toast.LENGTH_SHORT).show();
@@ -337,44 +342,25 @@ public class MainActivity extends AppCompatActivity {
 
     public void  load()
     {
-        try {
-            FileInputStream fileInputStream =  openFileInput("Code.txt");
-            int read = -1;
-            StringBuffer buffer = new StringBuffer();
-            while((read =fileInputStream.read())!= -1){
-                buffer.append((char)read);
-            }
-            Log.d("Code", buffer.toString());
 
-            String array[] = buffer.toString().split(" ");
-            named = array[0];
-            seeds = Integer.parseInt(array[1]);
-
+            named = preferences.getString(NAME, null);
+            seeds = preferences.getInt(SEEDS, 0);
             txtseeds.setText(String.valueOf(seeds));
             txtname.setText(named);
-
-        } catch (Exception e) {
-            Toast.makeText(this,"cant do", Toast.LENGTH_SHORT).show();
-            e.printStackTrace();
-        }
-
-
-        Toast.makeText(this,"Loaded", Toast.LENGTH_SHORT).show();
     }
 
+    public void store()
+    {
+        editor.putString(NAME,named).apply();
+        editor.putInt(SEEDS,seeds).apply();
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
         if (result != null) {
 
-            if(requestCode == 100){
-                if (resultCode == RESULT_OK && null != data) {
-                    ArrayList<String> res = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
-                    String inSpeech = res.get(0);
-                    recognition(inSpeech);
-                }
-            }
+
             //if qrcode has nothing in it
             if (result.getContents() == null) {
                 Toast.makeText(this, "Result Not Found", Toast.LENGTH_LONG).show();
@@ -444,6 +430,14 @@ public class MainActivity extends AppCompatActivity {
             }
         } else {
             super.onActivityResult(requestCode, resultCode, data);
+
+            if(requestCode == 100){
+                if (resultCode == RESULT_OK && null != data) {
+                    ArrayList<String> res = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+                    String inSpeech = res.get(0);
+                    recognition(inSpeech);
+                }
+            }
         }
     }
 
@@ -457,8 +451,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void listen(){
+        wait4inp();
         Intent i = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+        i.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
+                RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
         i.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault());
+        i.putExtra(RecognizerIntent.EXTRA_PROMPT,"Speak now");
 
         try {
             startActivityForResult(i, 100);
@@ -487,19 +485,38 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void recognition(String text){
+
         Log.e("Speech",""+text);
         String[] speech = text.split(" ");
         if(text.contains("hello")){
             speak(questions.get(0));
+            listen();
+        }
+
+        if(tryname==1)
+        {
+            if (text.contains("yes"))
+            {
+                speak("Hello "+preferences.getString(NAME,null)+", you are given 200 seeds to start with." );
+            }
+            else if (text.contains("no"))
+            {
+                speak(questions.get(0));
+                listen();
+            }
         }
 
 
         //
         if(text.contains("my name is")){
-            name = speech[speech.length-1];
-            Log.e("THIS", "" + name);
-            editor.putString(NAME,name).apply();
-            speak(questions.get(2));
+            named = speech[speech.length-1];
+            Log.e("THIS", "" + named);
+            editor.putString(NAME,named).apply();
+            speak("Is your name "+preferences.getString(NAME,null)+" ?" );
+            tryname=1;
+            listen();
+
+
         }
         //This must be the age
         if(text.contains("years") && text.contains("old")){
@@ -539,11 +556,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         if(text.contains("what is your name")){
-            String as_name = preferences.getString(AS_NAME,"");
-            if(as_name.equals(""))
-                speak("How do you want to call me?");
-            else
-                speak("My name is "+as_name);
+                speak("I am your Eco buddy");
         }
 
         if(text.contains("call you")){
@@ -554,6 +567,17 @@ public class MainActivity extends AppCompatActivity {
 
         if(text.contains("what is my name")){
             speak("Your name is "+preferences.getString(NAME,null));
+        }
+    }
+
+    void wait4inp()
+    {
+        try {
+            Thread.sleep(1500); //1000 milliseconds is one second.
+        }
+        catch (InterruptedException e)
+        {
+            e.printStackTrace();
         }
     }
 
