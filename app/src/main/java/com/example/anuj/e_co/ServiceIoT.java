@@ -34,12 +34,12 @@ public class ServiceIoT extends Service {
 
 
 
-    String host = "tcp://m12.cloudmqtt.com:11871";
+    String host = "tcp://m11.cloudmqtt.com:16201";
     // String clientId = "ExampleAndroidClient";
     String topic = "sensor/snd";
 
-    String username = "zyekiwpb";
-    String password = "z58Alb-SFL-_";
+    String username = "rcduaeoh";
+    String password = "hm3O7P_0KiXi";
 
     MqttAndroidClient client;
     IMqttToken token = null;
@@ -97,16 +97,18 @@ public class ServiceIoT extends Service {
             @Override
             public void messageArrived(String topic, MqttMessage message) throws Exception {
                 String msg = new String(message.getPayload());
-                if(!msg.contains("value")) {
-                    Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
-                    if (msg.equals("rhint")) {
-                        if (val != 0) {
-                            Toast.makeText(getApplicationContext(), msg + "fuck this shit", Toast.LENGTH_SHORT).show();
-                        }
-                        val = 0;
+               // if(!msg.contains("value")) {
+                    //Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
+                    if (msg.contains("rhint")) {
+                        //if (val != 0) {
+                        //   Toast.makeText(getApplicationContext(), msg + "fuck this shit", Toast.LENGTH_SHORT).show();
+
+
+                        //}
+                       // val = 0;
                         startNotification();
                     }
-                }
+             //   }
 
             }
 

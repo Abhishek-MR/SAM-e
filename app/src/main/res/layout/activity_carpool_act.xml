@@ -33,7 +33,7 @@
             android:layout_height="wrap_content"/>
 
     </android.support.v7.widget.CardView>
-    
+
 
     <Button
         android:layout_width="80dp"
