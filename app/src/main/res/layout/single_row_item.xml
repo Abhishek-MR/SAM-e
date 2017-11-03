@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    android:background="@color/separatorColor"
+    android:paddingBottom="1dp">
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="5dp">
+
+    <TextView android:id="@+id/tv_person_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Sample Data"
+        android:textStyle="bold"
+        android:textColor="@color/material_color_deep_purple_500"
+        android:textSize="15sp"
+        />
+
+    <TextView android:id="@+id/tv_person_pin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/material_color_deep_purple_400"
+        android:text="Sample Data 2"
+        android:textSize="15sp"
+         />
+
+        </LinearLayout>
+
+    </android.support.v7.widget.CardView>
+
+</LinearLayout>
