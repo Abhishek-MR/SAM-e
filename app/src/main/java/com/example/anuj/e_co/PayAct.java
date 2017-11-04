@@ -16,6 +16,7 @@ import org.json.JSONObject;
 public class PayAct extends AppCompatActivity {
 
     private IntentIntegrator qrScan;
+    String name, amt;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,8 +46,9 @@ public class PayAct extends AppCompatActivity {
                     //converting the data to json
                     JSONObject obj = new JSONObject(result.getContents());
                     //setting values to textviews
-                    // textViewName.setText(obj.getString("name"));
-                    //  textViewAddress.setText(obj.getString("address"));
+                    name=obj.getString("name");
+                    amt=obj.getString("amount");
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                     //if control comes here
