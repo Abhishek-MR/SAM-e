@@ -278,14 +278,7 @@ public class MainActivity extends AppCompatActivity {
 
         //Main act cards onClick
 
-        maincard.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //databaseHelper.insertData("asd","tht");
-                startActivity(new Intent(MainActivity.this,Details.class));
 
-            }
-        });
         quotecard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -319,8 +312,7 @@ public class MainActivity extends AppCompatActivity {
         pay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                qrScan.initiateScan();
-            }
+                startActivity(new Intent(MainActivity.this,PayAct.class));            }
         });
 
 

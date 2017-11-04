@@ -1,8 +1,7 @@
 package com.example.anuj.e_co;
-
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -14,33 +13,25 @@ import com.google.zxing.integration.android.IntentResult;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class Payment_act extends AppCompatActivity implements View.OnClickListener {
+public class PayAct extends AppCompatActivity {
 
-    //View Objects
-    private Button buttonScan;
-    private TextView textViewName, textViewAddress;
-
-    //qr code scanner object
     private IntentIntegrator qrScan;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
-        //View objects
-        buttonScan = (Button) findViewById(R.id.buttonScan);
-        textViewName = (TextView) findViewById(R.id.textViewName);
-        textViewAddress = (TextView) findViewById(R.id.textViewAddress);
-
-        //intializing scan object
+        setContentView(R.layout.activity_pay);
         qrScan = new IntentIntegrator(this);
 
-        //attaching onclick listener
-        buttonScan.setOnClickListener(this);
+        findViewById(R.id.repay2).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+
     }
 
-    //Getting the scan results
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
@@ -54,8 +45,8 @@ public class Payment_act extends AppCompatActivity implements View.OnClickListen
                     //converting the data to json
                     JSONObject obj = new JSONObject(result.getContents());
                     //setting values to textviews
-                    textViewName.setText(obj.getString("name"));
-                    textViewAddress.setText(obj.getString("address"));
+                    // textViewName.setText(obj.getString("name"));
+                    //  textViewAddress.setText(obj.getString("address"));
                 } catch (JSONException e) {
                     e.printStackTrace();
                     //if control comes here
@@ -69,9 +60,7 @@ public class Payment_act extends AppCompatActivity implements View.OnClickListen
             super.onActivityResult(requestCode, resultCode, data);
         }
     }
-    @Override
-    public void onClick(View view) {
-        //initiating the qr code scan
-        qrScan.initiateScan();
-    }
+
+
+
 }

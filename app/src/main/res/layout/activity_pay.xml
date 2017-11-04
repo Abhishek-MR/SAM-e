@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.anuj.e_co.PayAct">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:orientation="vertical"
+        android:layout_marginTop="50dp"
+        android:id="@+id/repay"
+        tools:layout_editor_absoluteX="8dp"
+        tools:layout_editor_absoluteY="8dp">
+
+        <at.markushi.ui.CircleButton
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            app:cb_color="#99CC00"
+            android:id="@+id/repay2"
+            app:cb_pressedRingWidth="8dip" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="PAY"
+            android:gravity="center"
+            android:textSize="20dp"
+            android:layout_gravity="center"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/repay"
+        android:orientation="vertical"
+        android:layout_marginTop="50dp"
+        android:id="@+id/rerec"
+        tools:layout_editor_absoluteX="8dp"
+        tools:layout_editor_absoluteY="8dp">
+
+        <at.markushi.ui.CircleButton
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            app:cb_color="@color/material_color_blue_500"
+            app:cb_pressedRingWidth="8dip" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="RECIEVE"
+            android:gravity="center"
+            android:textSize="20dp"
+            android:layout_gravity="center"
+            />
+
+    </LinearLayout>
+
+</RelativeLayout>
