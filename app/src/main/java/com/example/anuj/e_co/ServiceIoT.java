@@ -45,14 +45,14 @@ public class ServiceIoT extends Service {
     IMqttToken token = null;
     MqttConnectOptions options;
 
-    int val = 0,rkey;
+    int val = 0,rkey=0;
 
 
     @Override
     public void onCreate() {
         super.onCreate();
 
-/*        SharedPreferences xy = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+        /*SharedPreferences xy = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
         rkey= xy.getInt("key", 0);
         SharedPreferences ab = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
         val= ab.getInt("key", 0);

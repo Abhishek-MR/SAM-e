@@ -121,7 +121,7 @@ public class MainActivity extends AppCompatActivity {
     private static final String NAME = "name";
     private static final String AGE = "age";
     private static final String AS_NAME = "as_name";
-    String usnm1, usnm2,useed1,useed2,ret;
+    String usnm1, usnm2,useed1,useed2,ret,pname,pamt;
 
 
 
@@ -139,6 +139,17 @@ public class MainActivity extends AppCompatActivity {
         String clientId = MqttClient.generateClientId();
         client = new MqttAndroidClient(this.getApplicationContext(), host, clientId);
 
+       /* SharedPreferences nm = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+        pname= nm.getString("name", " ");
+        SharedPreferences am = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+        pamt= am.getString("amt"," ");
+
+        if (pamt!="NULL") {
+            amount = Integer.parseInt(pamt);
+            load();
+            seeds = seeds - amount;
+            store();
+        }*/
         options = new MqttConnectOptions();
         options.setUserName(username);
         options.setPassword(password.toCharArray());
@@ -459,46 +470,8 @@ public class MainActivity extends AppCompatActivity {
                     if (obj.getString("name").equals("Namespace")) {
                         homestat.setText("Connected to Home");
                     }
-                    else if (obj.getString("name").equals("Abhishek")){
-                        String amt = obj.getString("amount");
-                        amount = Integer.parseInt(amt);
 
 
-
-                        AlertDialog.Builder alertDialog = new AlertDialog.Builder(MainActivity.this);
-
-                        // Setting Dialog Title
-                        alertDialog.setTitle("Payment Confirmation");
-
-                        // Setting Dialog Message
-                        alertDialog.setMessage("Confirm your payment with Abhishek of "+ amt);
-
-                        // Setting Icon to Dialog
-                       // alertDialog.setIcon(R.drawable.delete);
-
-                        // Setting Positive "Yes" Button
-                        alertDialog.setPositiveButton("YES", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog,int which) {
-
-                                seeds=seeds-amount;
-                                txtseeds.setText(""+seeds);
-                                // Write your code here to invoke YES event
-                                Toast.makeText(getApplicationContext(), "Remaining seeds are "+seeds, Toast.LENGTH_SHORT).show();
-                            }
-                        });
-
-                        // Setting Negative "NO" Button
-                        alertDialog.setNegativeButton("NO", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                // Write your code here to invoke NO event
-                                Toast.makeText(getApplicationContext(), "You clicked on NO", Toast.LENGTH_SHORT).show();
-                                dialog.cancel();
-                            }
-                        });
-
-                        // Showing Alert Message
-                        alertDialog.show();
-                    }
 
                 } catch (JSONException e) {
                     e.printStackTrace();

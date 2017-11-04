@@ -124,12 +124,12 @@ public class Carpool_act extends FragmentActivity implements OnMapReadyCallback,
     CardView cardView;
     public String phnum, mhint, rhint,title;
     int key=0;
-    String host = "tcp://m11.cloudmqtt.com:16201";
+    String host = "tcp://m12.cloudmqtt.com:11871";
     // String clientId = "ExampleAndroidClient";
     String topic = "sensor/snd";
 
-    String username = "rcduaeoh";
-    String password = "hm3O7P_0KiXi";
+    String username = "zyekiwpb";
+    String password = "z58Alb-SFL-_";
 
     MqttAndroidClient client;
     IMqttToken token = null;
