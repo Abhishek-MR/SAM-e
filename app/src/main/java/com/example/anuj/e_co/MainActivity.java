@@ -114,13 +114,22 @@ public class MainActivity extends AppCompatActivity {
     private TextToSpeech tts;
     private ArrayList<String> questions;
     private String name, surname, age, asName;
+
     private SharedPreferences preferences;
     private SharedPreferences.Editor editor;
     private static final String PREFS = "prefs";
     private static final String SEEDS = "seed";
     private static final String NAME = "name";
-    private static final String AGE = "age";
-    private static final String AS_NAME = "as_name";
+    private static final String LIGHT = "light";
+    private static final String HOMESEED = "seed";
+    private static final String USER1N = "name";
+    private static final String USER2N = "name";
+    private static final String USER1S = "s_name";
+    private static final String USER2S = "s_name";
+    private static final String DRIVE = "ame";
+
+
+
     String usnm1, usnm2,useed1,useed2,ret;
 
 
@@ -155,13 +164,13 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onSuccess(IMqttToken asyncActionToken) {
                     // We are connected
-                    Toast.makeText(getApplicationContext(),"Connection successful",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(),"MAIN Connection successful",Toast.LENGTH_SHORT).show();
                 }
 
                 @Override
                 public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
                     // Something went wrong e.g. connection timeout or firewall problems
-                    Toast.makeText(getApplicationContext(),"Connection failed",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(),"MAIN Connection failed",Toast.LENGTH_SHORT).show();
 
                 }
             });
@@ -176,6 +185,11 @@ public class MainActivity extends AppCompatActivity {
         //ass
         preferences = getSharedPreferences(PREFS,0);
         editor = preferences.edit();
+
+        editor.putString(LIGHT,"off").apply();
+        editor.putInt(SEEDS,0).apply();
+        editor.putString(NAME,"User").apply();
+
 
         findViewById(R.id.fab).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -246,20 +260,7 @@ public class MainActivity extends AppCompatActivity {
 
         }
 
-        SharedPreferences cd = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-        rkey= cd.getString("key", "");
 
-        SharedPreferences gh = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-         usnm1 = gh.getString("key", " ");
-        SharedPreferences ij = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-         useed1 = ij.getString("key", " ");
-        SharedPreferences kl = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-         usnm2 = kl.getString("key", " ");
-        SharedPreferences mn = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-         useed2 = mn.getString("key", " ");
-        SharedPreferences ef = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-        ret= ef.getString("key", " ");
-        Toast.makeText(getApplicationContext(),named,Toast.LENGTH_SHORT).show();
 
         homestat = (TextView) findViewById(R.id.txt_original_date);
         swipe =(TextView)findViewById(R.id.swipe);
@@ -267,17 +268,17 @@ public class MainActivity extends AppCompatActivity {
         quotecard=(CardView)findViewById(R.id.quotecard);
         homecard=(CardView)findViewById(R.id.homecard);
         transcard=(CardView)findViewById(R.id.transcard);
-        hseed=(TextView)findViewById(R.id.swipe);
-        uname1 =(TextView)findViewById(R.id.swipe);
-        uname2 =(TextView)findViewById(R.id.swipe);
-        seed1 =(TextView)findViewById(R.id.swipe);
-        seed2=(TextView)findViewById(R.id.swipe);
+        hseed=(TextView)findViewById(R.id.hseed);
+        uname1 =(TextView)findViewById(R.id.user1);
+        uname2 =(TextView)findViewById(R.id.user2);
+        seed1 =(TextView)findViewById(R.id.seed1);
+        seed2=(TextView)findViewById(R.id.seed2);
 
-        hseed.setText(ret);
-        uname1.setText(usnm1);
-        seed1.setText(useed1);
-        uname1.setText(usnm2);
-        seed2.setText(useed2);
+        hseed.setText(""+100);
+        uname1.setText(preferences.getString(NAME,"dcds"));
+        seed1.setText(""+preferences.getInt(SEEDS, 0));
+        uname2.setText("Abhishek");
+        seed2.setText("300");
         buybut=(Button)findViewById(R.id.buybut) ;
 
         toolbar= (Toolbar) findViewById(R.id.toolbar);
@@ -608,7 +609,6 @@ public class MainActivity extends AppCompatActivity {
         if(text.contains("years") && text.contains("old")){
             String age = speech[speech.length-3];
             Log.e("THIS", "" + age);
-            editor.putString(AGE, age).apply();
         }
 
         if(text.contains("what time is it")){
@@ -637,19 +637,13 @@ public class MainActivity extends AppCompatActivity {
             speak("Thank you too " + preferences.getString(NAME, null));
         }
 
-        if(text.contains("how old am I")){
-            speak("You are "+preferences.getString(AGE,null)+" years old.");
-        }
+
 
         if(text.contains("what is your name")){
                 speak("I am your Eco buddy");
         }
 
-        if(text.contains("call you")){
-            String name = speech[speech.length-1];
-            editor.putString(AS_NAME,name).apply();
-            speak("I like it, thank you "+preferences.getString(NAME,null));
-        }
+
 
         if(text.contains("what is my name")){
             speak("Your name is "+preferences.getString(NAME,null));
@@ -657,16 +651,17 @@ public class MainActivity extends AppCompatActivity {
 
         if(text.contains("on")&&text.contains("light")){
 
-            if(rkey.equals("off")) {
+            if(preferences.getString(LIGHT, null).equals("off")) {
 
                 try {
                     client.publish(topic, on.getBytes(), 0, false);
                 } catch (MqttException e) {
                     e.printStackTrace();
+                    Toast.makeText(getApplicationContext(),"publish failed",Toast.LENGTH_SHORT).show();
+
                 }
                 speak("Light switched on");
-                SharedPreferences cd = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-                cd.edit().putString("key", "on").apply();
+                editor.putString(LIGHT,"on").apply();
             }
             else
                 speak("It is already on");
@@ -679,16 +674,16 @@ public class MainActivity extends AppCompatActivity {
 
         if(text.contains("off")&&text.contains("light")){
 
-            if(rkey.equals("on")) {
+            if(preferences.getString(LIGHT, null).equals("on")) {
 
                 try {
                     client.publish(topic, off.getBytes(), 0, false);
                 } catch (MqttException e) {
                     e.printStackTrace();
+                    Toast.makeText(getApplicationContext(),"publish failed",Toast.LENGTH_SHORT).show();
                 }
                 speak("Light switched off");
-                SharedPreferences cd = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-                cd.edit().putString("key", "off").apply();
+                editor.putString(LIGHT,"off").apply();
             }
             else
                 speak("It is already off");

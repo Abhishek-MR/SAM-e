@@ -31,7 +31,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Not Driving"
-                android:id="@+id/textdrive"
+                android:id="@+id/drivestat"
                 android:textColor="@color/material_color_deep_purple_500"
                 android:gravity="center"/>
         </LinearLayout>
@@ -64,6 +64,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:id="@+id/drivetxt"
                 android:text="Drive slowly"
                 android:textColor="@color/material_color_deep_purple_500"
                 android:textSize="18dp"

@@ -20,23 +20,27 @@ public class HomeAccount extends AppCompatActivity {
     public static final String Name = "nameKey";
     public static final String Seeds = "0";
 
+    private SharedPreferences preferences;
+    private SharedPreferences.Editor editor;
+    private static final String PREFS = "prefs";
+    private static final String SEEDS = "seed";
+    private static final String NAME = "name";
+    private static final String LIGHT = "light";
+    private static final String HOMESEED = "seed";
+    private static final String USER1N = "name";
+    private static final String USER2N = "name";
+    private static final String USER1S = "s_name";
+    private static final String USER2S = "s_name";
+    private static final String DRIVE = "ame";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_account);
 
-        SharedPreferences cd = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-        String rkey= cd.getString("key", "");
-        SharedPreferences ef = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-        String ret= ef.getString("key", "");
-        SharedPreferences gh = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-        String usnm1 = gh.getString("key", "");
-        SharedPreferences ij = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-        String useed1 = ij.getString("key", "");
-        SharedPreferences kl = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-        String usnm2 = kl.getString("key", "");
-        SharedPreferences mn = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-        String useed2 = mn.getString("key", "");
+        preferences = getSharedPreferences(PREFS,0);
+        editor = preferences.edit();
+
 
 
         name_1= (TextView) findViewById(R.id.us1);
@@ -47,12 +51,8 @@ public class HomeAccount extends AppCompatActivity {
         lgt= (TextView) findViewById(R.id.light1);
         fan= (TextView) findViewById(R.id.fan1);
 
-        SharedPreferences settings = getSharedPreferences(MyPREFERENCES,
-                Context.MODE_PRIVATE);
-        final String name = settings.getString(Name,"name");
-        final int seeds = settings.getInt(Seeds, 0);
 
-        switch (rkey){
+        switch (preferences.getString(LIGHT,"dsv")){
 
             case "on": lgt.setText("on");
                         fan.setText("on");
@@ -62,11 +62,11 @@ public class HomeAccount extends AppCompatActivity {
                 break;
         }
 
-        homseed.setText(ret);
-        name_1.setText(usnm1);
-        seed_1.setText(useed1);
-        name_2.setText(usnm2);
-        seed_2.setText(useed2);
+        homseed.setText(""+preferences.getInt(HOMESEED,0));
+        name_1.setText(preferences.getString(USER1N,"hjg"));
+        seed_1.setText(preferences.getString(USER1S,"sh"));
+        name_2.setText("Anuj");
+        seed_2.setText(preferences.getString(USER2S,"sd"));
 
 
     }

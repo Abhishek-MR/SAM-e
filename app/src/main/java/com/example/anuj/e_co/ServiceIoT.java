@@ -45,18 +45,31 @@ public class ServiceIoT extends Service {
     IMqttToken token = null;
     MqttConnectOptions options;
 
-    int val = 0,rkey;
+    int c=0;
+
+
+    private SharedPreferences preferences;
+    private SharedPreferences.Editor editor;
+    private static final String PREFS = "prefs";
+    private static final String SEEDS = "seed";
+    private static final String NAME = "name";
+    private static final String LIGHT = "light";
+    private static final String HOMESEED = "seed";
+    private static final String USER1N = "name";
+    private static final String USER2N = "name";
+    private static final String USER1S = "s_name";
+    private static final String USER2S = "s_name";
+    private static final String DRIVE = "ame";
 
 
     @Override
     public void onCreate() {
         super.onCreate();
 
-/*        SharedPreferences xy = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-        rkey= xy.getInt("key", 0);
-        SharedPreferences ab = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-        val= ab.getInt("key", 0);
-*/
+
+        preferences = getSharedPreferences(PREFS,0);
+        editor = preferences.edit();
+
         String clientId = MqttClient.generateClientId();
         client = new MqttAndroidClient(this.getApplicationContext(), host, clientId);
 
@@ -77,14 +90,14 @@ public class ServiceIoT extends Service {
                 @Override
                 public void onSuccess(IMqttToken asyncActionToken) {
                     // We are connected
-                    Toast.makeText(getApplicationContext(),"Connection successful",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(),"IOT Connection successful",Toast.LENGTH_SHORT).show();
                     subscribtion();
                 }
 
                 @Override
                 public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
                     // Something went wrong e.g. connection timeout or firewall problems
-                    Toast.makeText(getApplicationContext(),"Connection failed",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(),"IOT Connection failed",Toast.LENGTH_SHORT).show();
 
                 }
             });
@@ -112,52 +125,51 @@ public class ServiceIoT extends Service {
                 }
                 if (msg.equals("on"))
                 {
-                    SharedPreferences cd = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-                    cd.edit().putString("key", "on").apply();
+                    editor.putString(LIGHT,"on").apply();
                 }
                 if (msg.equals("off"))
                 {
-                    SharedPreferences cd = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-                    cd.edit().putString("key", "off").apply();
+                    editor.putString(LIGHT,"off").apply();
                 }
                 if (msg.contains("seedpi"))
                 {
 
-                    String[] msgs=msg.split(":");
+                    String[] msgs=msg.split(" ");
                     //msgs[1];
-                    SharedPreferences ef = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-                    ef.edit().putString("key", msgs[1]).apply();
+                    editor.putInt(HOMESEED,Integer.parseInt(msgs[1])).apply();
+                    Toast.makeText(getApplicationContext(),preferences.getString(HOMESEED,"null"),Toast.LENGTH_SHORT).show();
+
+
                 }
 
-                if (msg.contains("user"))
+                if (msg.contains("userpi"))
                 {
+                    Toast.makeText(getApplicationContext(),msg,Toast.LENGTH_SHORT).show();
 
-                    if (msg.contains("1"))
+                    if (msg.contains("Abhishek"))
                     {
 
-                        String[] msgs=msg.split(":");
+                        String[] msgs=msg.split(" ");
                         //msgs[1];
-                        SharedPreferences gh = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-                        gh.edit().putString("key", msgs[2]).apply();
-                        SharedPreferences ij = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-                        ij.edit().putString("key", msgs[4]).apply();
+                        editor.putString(USER1N,msgs[2]).apply();
+                        editor.putString(USER1S,msgs[4]).apply();
+
+
+
                     }
-                    if (msg.contains("2"))
+                    if (msg.contains("Anuj"))
                     {
 
-                        String[] msgs=msg.split(":");
+                        String[] msgs=msg.split(" ");
                         //msgs[1];
-                        SharedPreferences kl = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-                        kl.edit().putString("key", msgs[2]).apply();
-                        SharedPreferences mn = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-                        mn.edit().putString("key", msgs[4]).apply();
+                        editor.putString(USER2N,msgs[2]).apply();
+                        editor.putString(USER2S,msgs[4]).apply();
                     }
                 }
                 if (msg.equals("0"))
                 {
                    //start car
-                    SharedPreferences ef = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-                    ef.edit().putString("key", "on").apply();
+                    startNotification();
 
                 }
 
@@ -165,37 +177,35 @@ public class ServiceIoT extends Service {
                 {
                     //full acc
                     c1++;
-                    SharedPreferences cd = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-                    cd.edit().putString("key", "on").apply();
+                    max();
+
+
                 }
                 if (msg.equals("2"))
                 {
                     // half clutch
                     c2++;
-                    SharedPreferences cd = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-                    cd.edit().putString("key", "on").apply();
+                    max();
+
+
                 }
                 if (msg.equals("0"))
                 {
                     //full clutch
                     c3++;
-                    SharedPreferences cd = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-                    cd.edit().putString("key", "on").apply();
+                    max();
+
+
                 }
                 if (msg.equals("0"))
                 {
 
                     c4++;
+                    max();
+
                     //good
-                    SharedPreferences cd = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-                    cd.edit().putString("key", "on").apply();
                 }
 
-                if (msg.equals("car"))
-                {
-                    SharedPreferences cd = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-                    cd.edit().putString("key", "Driving").apply();
-                }
 
 
             }
@@ -208,6 +218,18 @@ public class ServiceIoT extends Service {
 
 
     }
+
+    void max()
+    {
+        int max=c1;
+        editor.putString(DRIVE,"c1");
+        if(c2>max) editor.putString(DRIVE,"c2");
+        if(c3>max) editor.putString(DRIVE,"c3");
+        if(c4>max) editor.putString(DRIVE,"c4");
+
+        editor.putString(DRIVE,"c1");
+    }
+
 
     @Nullable
     @Override
