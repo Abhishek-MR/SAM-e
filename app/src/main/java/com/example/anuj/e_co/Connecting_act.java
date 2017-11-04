@@ -1,6 +1,7 @@
 package com.example.anuj.e_co;
 
 import android.content.Intent;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.Toast;
@@ -33,6 +34,18 @@ public class Connecting_act extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_connecting_act);
+
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                //Do something after 100ms
+                Intent i = new Intent(Connecting_act.this,Ride_act.class);
+                startActivity(i);
+                finish();
+            }
+        }, 9000);
+
 
 
         String clientId = MqttClient.generateClientId();

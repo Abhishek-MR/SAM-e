@@ -1,5 +1,9 @@
 package com.example.anuj.e_co;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -16,7 +20,7 @@ import org.json.JSONObject;
 public class PayAct extends AppCompatActivity {
 
     private IntentIntegrator qrScan;
-    String name, amt;
+    public String name, amt;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,6 +52,44 @@ public class PayAct extends AppCompatActivity {
                     //setting values to textviews
                     name=obj.getString("name");
                     amt=obj.getString("amount");
+
+                    AlertDialog.Builder alertDialog = new AlertDialog.Builder(PayAct.this);
+
+                    // Setting Dialog Title
+                    alertDialog.setTitle("Payment Confirmation");
+
+                    // Setting Dialog Message
+                    alertDialog.setMessage("Confirm your payment with Abhishek of "+ amt);
+
+                    // Setting Icon to Dialog
+                    // alertDialog.setIcon(R.drawable.delete);
+
+                    // Setting Positive "Yes" Button
+                    alertDialog.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog,int which) {
+
+                            Toast.makeText(getApplicationContext(), "Payment Successful to "+ name + "of Rs "+ amt, Toast.LENGTH_SHORT).show();
+
+                            SharedPreferences nm = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+                            nm.edit().putString("name", name).apply();
+                            SharedPreferences am = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+                            am.edit().putString("amt",amt).apply();
+                        }
+                    });
+
+                    // Setting Negative "NO" Button
+                    alertDialog.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            // Write your code here to invoke NO event
+                            Toast.makeText(getApplicationContext(), "You clicked on NO", Toast.LENGTH_SHORT).show();
+                            dialog.cancel();
+                        }
+                    });
+
+                    // Showing Alert Message
+                    alertDialog.show();
+
+
 
                 } catch (JSONException e) {
                     e.printStackTrace();
