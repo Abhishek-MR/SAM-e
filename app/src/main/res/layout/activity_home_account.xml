@@ -66,6 +66,7 @@
                 android:text="100"
                 android:textColor="@color/material_color_deep_purple_500"
                 android:textSize="18dp"
+                android:id="@+id/hseed"
                 android:padding="10dp"/>
 
         </LinearLayout>
@@ -106,6 +107,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:id="@+id/us1"
                     android:text="User1"
                     android:textSize="15dp"
                     android:textStyle="bold" />
@@ -114,6 +116,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:id="@+id/sed1"
                     android:text="100"
                     android:gravity="center"
                     android:textSize="15dp" />
@@ -131,6 +134,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="User1"
+                    android:id="@+id/us2"
                     android:textSize="15dp"
                     android:textStyle="bold" />
 
@@ -139,57 +143,11 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="100"
+                    android:id="@+id/sed2"
                     android:gravity="center"
                     android:textSize="15dp" />
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:padding="10dp"
-                android:weightSum="2">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="User1"
-                    android:textSize="15dp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="100"
-                    android:gravity="center"
-                    android:textSize="15dp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:padding="10dp"
-                android:weightSum="2">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="User1"
-                    android:textSize="15dp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="100"
-                    android:gravity="center"
-                    android:textSize="15dp" />
-            </LinearLayout>
 
 
 
@@ -200,10 +158,9 @@
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cardCornerRadius="5dp"
-        android:padding="10dp"
         android:layout_marginTop="5dp"
-        >
+        android:padding="10dp"
+        app:cardCornerRadius="5dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -213,12 +170,12 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:padding="10dp"
                 android:text="Device Details"
-                android:textSize="20dp"
-                android:textStyle="bold"
                 android:textColor="@color/material_color_deep_purple_500"
+                android:textSize="20dp"
 
-                android:padding="10dp"/>
+                android:textStyle="bold" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -239,8 +196,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="ON"
                     android:gravity="center"
+                    android:id="@+id/light1"
+                    android:text="ON/OFF"
                     android:textSize="15dp" />
             </LinearLayout>
 
@@ -263,11 +221,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="ON"
                     android:gravity="center"
+                    android:id="@+id/fan1"
+                    android:text="ON/OFF"
                     android:textSize="15dp" />
             </LinearLayout>
-
 
 
         </LinearLayout>

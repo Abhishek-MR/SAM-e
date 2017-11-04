@@ -1,10 +1,10 @@
 package com.example.anuj.e_co;
 
-import android.os.Bundle;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 import android.widget.Toast;
 
-import cdflynn.android.library.checkview.CheckView;
 import org.eclipse.paho.android.service.MqttAndroidClient;
 import org.eclipse.paho.client.mqttv3.IMqttActionListener;
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
@@ -16,7 +16,7 @@ import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.eclipse.paho.client.mqttv3.MqttSecurityException;
 
-public class Ride_act extends AppCompatActivity {
+public class Loader_act extends AppCompatActivity {
 
     String host = "tcp://m11.cloudmqtt.com:16201";
     // String clientId = "ExampleAndroidClient";
@@ -25,30 +25,16 @@ public class Ride_act extends AppCompatActivity {
     String username = "rcduaeoh";
     String password = "hm3O7P_0KiXi";
 
+
     MqttAndroidClient client;
     IMqttToken token = null;
     MqttConnectOptions options;
-
-    static class Views {
-
-        CheckView check;
-
-        Views(Ride_act activity) {
-            check = (CheckView) activity.findViewById(R.id.check);
-        }
-    }
-
-    private Views mViews;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_ride_act);
-
-        mViews = new Views(this);
-        mViews.check.check();
-
+        setContentView(R.layout.activity_loader_act);
 
         String clientId = MqttClient.generateClientId();
         client = new MqttAndroidClient(this.getApplicationContext(), host, clientId);
@@ -69,14 +55,16 @@ public class Ride_act extends AppCompatActivity {
                 @Override
                 public void onSuccess(IMqttToken asyncActionToken) {
                     // We are connected
-                    String message = "open";
+                   Toast.makeText(getApplicationContext(),"Connection successful in loader",Toast.LENGTH_SHORT).show();
+                    String conreq="conreq";
                     try {
-                        client.publish(topic, message.getBytes(), 0, false);
+                        client.publish(topic, conreq.getBytes(), 0, false);
                     } catch (MqttException e) {
                         e.printStackTrace();
                     }
 
 
+                    subscribtion();
                 }
 
                 @Override
@@ -99,7 +87,13 @@ public class Ride_act extends AppCompatActivity {
             @Override
             public void messageArrived(String topic, MqttMessage message) throws Exception {
                 //textView.setText(new String(message.getPayload()));
-                String msg = new String(message.getPayload());
+                Toast.makeText(getApplicationContext(),new String(message.getPayload()),Toast.LENGTH_SHORT).show();
+                String temp = new String(message.getPayload());
+                if (temp.contains("conf")){
+                    Intent i = new Intent(Loader_act.this,Ride_act.class);
+                    startActivity(i);
+                }
+
 
             }
 
@@ -109,6 +103,7 @@ public class Ride_act extends AppCompatActivity {
             }
         });
     }
+
 
     private void subscribtion(){
         try {

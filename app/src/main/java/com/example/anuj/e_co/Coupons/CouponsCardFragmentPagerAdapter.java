@@ -14,6 +14,7 @@ public class CouponsCardFragmentPagerAdapter extends FragmentStatePagerAdapter i
     private List<CouponsCardFragment> mFragments;
     private float mBaseElevation;
 
+
     public CouponsCardFragmentPagerAdapter(FragmentManager fm, float baseElevation) {
         super(fm);
         mFragments = new ArrayList<>();
@@ -33,6 +34,7 @@ public class CouponsCardFragmentPagerAdapter extends FragmentStatePagerAdapter i
     @Override
     public CardView getCardViewAt(int position) {
         return mFragments.get(position).getCardView();
+
     }
 
     @Override

@@ -4,7 +4,7 @@ package com.example.anuj.e_co.Coupons;
 public class CouponsCardItem {
 
     private int mTextResource;
-    private int mTitleResource;
+    public int mTitleResource;
 
     public CouponsCardItem(int title, int text) {
         mTitleResource = title;

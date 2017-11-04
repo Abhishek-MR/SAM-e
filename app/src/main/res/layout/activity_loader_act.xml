@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.anuj.e_co.Loader_act">
+
+    <io.github.yuweiguocn.lib.squareloading.SquareLoading
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorPrimary"
+        app:squareColor="@android:color/white"
+        app:squareSize="20dp"
+        app:squareCorner="2dp"
+        app:dividerSize="2dp"
+        app:xCount="4"
+        app:yCount="3"
+        tools:layout_editor_absoluteY="8dp"
+        tools:layout_editor_absoluteX="8dp" />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="Waiting for Response..."
+        android:textSize="18dp"
+        android:textColor="@android:color/darker_gray"
+        android:layout_marginBottom="143dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true" />
+
+</RelativeLayout>

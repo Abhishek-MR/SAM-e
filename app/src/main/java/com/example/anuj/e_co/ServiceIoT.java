@@ -8,7 +8,9 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.IBinder;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
 import android.widget.Toast;
@@ -31,28 +33,30 @@ import org.eclipse.paho.client.mqttv3.MqttSecurityException;
 
 public class ServiceIoT extends Service {
 
+    int c1=0,c2=0,c3=0,c4=0;
 
-
-
-    String host = "tcp://m11.cloudmqtt.com:16201";
+    String host = "tcp://m12.cloudmqtt.com:11871";
     // String clientId = "ExampleAndroidClient";
     String topic = "sensor/snd";
 
-    String username = "rcduaeoh";
-    String password = "hm3O7P_0KiXi";
-
+    String username = "zyekiwpb";
+    String password = "z58Alb-SFL-_";
     MqttAndroidClient client;
     IMqttToken token = null;
     MqttConnectOptions options;
 
-    int val = 0;
+    int val = 0,rkey;
 
 
     @Override
     public void onCreate() {
         super.onCreate();
 
-
+/*        SharedPreferences xy = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+        rkey= xy.getInt("key", 0);
+        SharedPreferences ab = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+        val= ab.getInt("key", 0);
+*/
         String clientId = MqttClient.generateClientId();
         client = new MqttAndroidClient(this.getApplicationContext(), host, clientId);
 
@@ -97,18 +101,102 @@ public class ServiceIoT extends Service {
             @Override
             public void messageArrived(String topic, MqttMessage message) throws Exception {
                 String msg = new String(message.getPayload());
-               // if(!msg.contains("value")) {
-                    //Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
+
                     if (msg.contains("rhint")) {
-                        //if (val != 0) {
-                        //   Toast.makeText(getApplicationContext(), msg + "fuck this shit", Toast.LENGTH_SHORT).show();
-
-
-                        //}
-                       // val = 0;
-                        startNotification();
+                      //  if (rkey!=1)
+                            startNotification();
                     }
-             //   }
+                if (msg.equals("open")) {
+                    Intent i = new Intent(ServiceIoT.this,Ride_act.class);
+                    startActivity(i);
+                }
+                if (msg.equals("on"))
+                {
+                    SharedPreferences cd = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+                    cd.edit().putString("key", "on").apply();
+                }
+                if (msg.equals("off"))
+                {
+                    SharedPreferences cd = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+                    cd.edit().putString("key", "off").apply();
+                }
+                if (msg.contains("seedpi"))
+                {
+
+                    String[] msgs=msg.split(":");
+                    //msgs[1];
+                    SharedPreferences ef = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+                    ef.edit().putString("key", msgs[1]).apply();
+                }
+
+                if (msg.contains("user"))
+                {
+
+                    if (msg.contains("1"))
+                    {
+
+                        String[] msgs=msg.split(":");
+                        //msgs[1];
+                        SharedPreferences gh = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+                        gh.edit().putString("key", msgs[2]).apply();
+                        SharedPreferences ij = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+                        ij.edit().putString("key", msgs[4]).apply();
+                    }
+                    if (msg.contains("2"))
+                    {
+
+                        String[] msgs=msg.split(":");
+                        //msgs[1];
+                        SharedPreferences kl = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+                        kl.edit().putString("key", msgs[2]).apply();
+                        SharedPreferences mn = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+                        mn.edit().putString("key", msgs[4]).apply();
+                    }
+                }
+                if (msg.equals("0"))
+                {
+                   //start car
+                    SharedPreferences ef = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+                    ef.edit().putString("key", "on").apply();
+
+                }
+
+                if (msg.equals("1"))
+                {
+                    //full acc
+                    c1++;
+                    SharedPreferences cd = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+                    cd.edit().putString("key", "on").apply();
+                }
+                if (msg.equals("2"))
+                {
+                    // half clutch
+                    c2++;
+                    SharedPreferences cd = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+                    cd.edit().putString("key", "on").apply();
+                }
+                if (msg.equals("0"))
+                {
+                    //full clutch
+                    c3++;
+                    SharedPreferences cd = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+                    cd.edit().putString("key", "on").apply();
+                }
+                if (msg.equals("0"))
+                {
+
+                    c4++;
+                    //good
+                    SharedPreferences cd = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+                    cd.edit().putString("key", "on").apply();
+                }
+
+                if (msg.equals("car"))
+                {
+                    SharedPreferences cd = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+                    cd.edit().putString("key", "Driving").apply();
+                }
+
 
             }
 
@@ -160,13 +248,15 @@ public class ServiceIoT extends Service {
         String strtext = getString(R.string.notificationtext);
 
         // Open NotificationView Class on Notification Click
-        Intent intent = new Intent(this, Ride_act.class);
+        Intent intent = new Intent(this, Connecting_act.class);
+
         // Send data to NotificationView Class
         intent.putExtra("title", strtitle);
         intent.putExtra("text", strtext);
         // Open NotificationView.java Activity
         PendingIntent pIntent = PendingIntent.getActivity(this, 0, intent,
                 PendingIntent.FLAG_UPDATE_CURRENT);
+
 
         Intent intent2 = new Intent(this, Carpool_act.class);
         // Send data to NotificationView Class
@@ -183,6 +273,7 @@ public class ServiceIoT extends Service {
         // Open NotificationView.java Activity
         PendingIntent pIntent3 = PendingIntent.getActivity(this, 0, intent3,
                 PendingIntent.FLAG_UPDATE_CURRENT);
+
 
         //Create Notification using NotificationCompat.Builder
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this)

@@ -9,6 +9,7 @@ import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.provider.AlarmClock;
 import android.speech.RecognizerIntent;
 import android.speech.tts.TextToSpeech;
@@ -33,6 +34,7 @@ import android.widget.Toast;
 
 import com.example.anuj.e_co.BottomSheet.BottomSheetItemObject;
 import com.example.anuj.e_co.BottomSheet.BottomSheetRecyclerViewAdapter;
+import com.example.anuj.e_co.Coupons.CouponsCardFragment;
 import com.example.anuj.e_co.Coupons.CouponsCardFragmentPagerAdapter;
 import com.example.anuj.e_co.Coupons.CouponsCardItem;
 import com.example.anuj.e_co.Coupons.CouponsCardPagerAdapter;
@@ -54,6 +56,7 @@ import java.util.List;
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
+
     BottomSheetBehavior mBottomSheetBehavior;
     TextView swipe,txtname,txtseeds;
     ImageView swipebut;
@@ -78,11 +81,11 @@ public class MainActivity extends AppCompatActivity {
     private static final int REQUEST_SELECT_PLACE = 1000;
 
 
-    public String named="User";
+    public String named="User",cname;
     public int seeds = 0,amount=0;
 
     public String currentDateTime;
-    public  TextView homestat;
+    public  TextView homestat,hseed,uname1,uname2,seed1,seed2;
 
     int tryname=0;
 
@@ -143,6 +146,10 @@ public class MainActivity extends AppCompatActivity {
 
         //over
 
+
+
+
+
         if (ActivityCompat.checkSelfPermission(MainActivity.this, android.Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED && ActivityCompat.
                 checkSelfPermission(MainActivity.this, android.Manifest.permission.ACCESS_COARSE_LOCATION)
@@ -154,9 +161,6 @@ public class MainActivity extends AppCompatActivity {
         if (ContextCompat.checkSelfPermission(MainActivity.this, android.Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(MainActivity.this, new String[]{android.Manifest.permission.CALL_PHONE},1);
         }
-
-
-        Toast.makeText(getApplicationContext(),named,Toast.LENGTH_SHORT).show();
 
         //Database
         databaseHelper = new PersonDatabaseHelper(this);
@@ -183,13 +187,36 @@ public class MainActivity extends AppCompatActivity {
 
         }
 
+
+        SharedPreferences gh = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+        String usnm1 = gh.getString("key", "");
+        SharedPreferences ij = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+        String useed1 = ij.getString("key", "");
+        SharedPreferences kl = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+        String usnm2 = kl.getString("key", "");
+        SharedPreferences mn = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+        String useed2 = mn.getString("key", "");
+        SharedPreferences ef = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+        String ret= ef.getString("key", "");
+        Toast.makeText(getApplicationContext(),named,Toast.LENGTH_SHORT).show();
+
         homestat = (TextView) findViewById(R.id.txt_original_date);
         swipe =(TextView)findViewById(R.id.swipe);
         maincard=(CardView)findViewById(R.id.maincard);
         quotecard=(CardView)findViewById(R.id.quotecard);
         homecard=(CardView)findViewById(R.id.homecard);
         transcard=(CardView)findViewById(R.id.transcard);
+        hseed=(TextView)findViewById(R.id.swipe);
+        uname1 =(TextView)findViewById(R.id.swipe);
+        uname2 =(TextView)findViewById(R.id.swipe);
+        seed1 =(TextView)findViewById(R.id.swipe);
+        seed2=(TextView)findViewById(R.id.swipe);
 
+        hseed.setText(ret);
+        uname1.setText(usnm1);
+        seed1.setText(useed1);
+        uname1.setText(usnm2);
+        seed2.setText(useed2);
         buybut=(Button)findViewById(R.id.buybut) ;
 
         toolbar= (Toolbar) findViewById(R.id.toolbar);
@@ -401,6 +428,7 @@ public class MainActivity extends AppCompatActivity {
                             public void onClick(DialogInterface dialog,int which) {
 
                                 seeds=seeds-amount;
+                                txtseeds.setText(""+seeds);
                                 // Write your code here to invoke YES event
                                 Toast.makeText(getApplicationContext(), "Remaining seeds are "+seeds, Toast.LENGTH_SHORT).show();
                             }
@@ -497,7 +525,10 @@ public class MainActivity extends AppCompatActivity {
         {
             if (text.contains("yes"))
             {
-                speak("Hello "+preferences.getString(NAME,null)+", you are given 200 seeds to start with." );
+                speak("Hello "+preferences.getString(NAME,null)+", you are given 300 seeds to start with." );
+                seeds=seeds+300;
+                txtseeds.setText(""+seeds);
+
             }
             else if (text.contains("no"))
             {
@@ -513,6 +544,8 @@ public class MainActivity extends AppCompatActivity {
             Log.e("THIS", "" + named);
             editor.putString(NAME,named).apply();
             speak("Is your name "+preferences.getString(NAME,null)+" ?" );
+            txtname.setText(preferences.getString(NAME,null)
+            );
             tryname=1;
             listen();
 

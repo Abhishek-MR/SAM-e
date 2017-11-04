@@ -69,7 +69,8 @@
             android:theme="@style/Translucent" />
         <activity android:name=".DriveOver" />
         <activity android:name=".Tips" />
-
+        <activity android:name=".Loader_act" />
+        <activity android:name=".Connecting_act"></activity>
     </application>
 
 </manifest>

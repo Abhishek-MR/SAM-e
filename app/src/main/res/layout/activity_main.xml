@@ -232,6 +232,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentEnd="true"
+                            android:id="@+id/hseed"
                             android:text="100 seeds"
                             android:textColor="@color/material_color_deep_purple_400"
                             />
@@ -256,6 +257,7 @@
                             android:layout_height="wrap_content"
                             android:layout_alignParentEnd="true"
                             android:text="100"
+                            android:id="@+id/seed1"
                             android:textColor="@color/material_color_deep_purple_400"
                             />
 
@@ -279,56 +281,12 @@
                             android:layout_height="wrap_content"
                             android:layout_alignParentEnd="true"
                             android:text="100"
+                            android:id="@+id/seed2"
                             android:textColor="@color/material_color_deep_purple_400"
                             />
 
                     </RelativeLayout>
 
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="6dp"
-                        >
-
-                        <TextView
-                            android:id="@+id/user3"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="user3"
-                            android:textColor="@color/material_color_deep_purple_400"
-                            />
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentEnd="true"
-                            android:text="100"
-                            android:textColor="@color/material_color_deep_purple_400"
-                            />
-
-                    </RelativeLayout>
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="6dp"
-                        >
-
-                        <TextView
-                            android:id="@+id/user4"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="user4"
-                            android:textColor="@color/material_color_deep_purple_400"
-                            />
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentEnd="true"
-                            android:text="100"
-                            android:textColor="@color/material_color_deep_purple_400"
-                            />
-
-                    </RelativeLayout>
 
                 </LinearLayout>
 

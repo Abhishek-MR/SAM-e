@@ -4,6 +4,7 @@ package com.example.anuj.e_co;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.Color;
@@ -12,6 +13,7 @@ import android.location.Geocoder;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.NotificationCompat;
@@ -121,7 +123,7 @@ public class Carpool_act extends FragmentActivity implements OnMapReadyCallback,
     Button navigation;
     CardView cardView;
     public String phnum, mhint, rhint,title;
-
+    int key=0;
     String host = "tcp://m11.cloudmqtt.com:16201";
     // String clientId = "ExampleAndroidClient";
     String topic = "sensor/snd";
@@ -188,12 +190,17 @@ public class Carpool_act extends FragmentActivity implements OnMapReadyCallback,
         req.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                key=1;
+                SharedPreferences xy = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+                xy.edit().putInt("key", key).apply();
                 String message = "rhint";
                 try {
                     client.publish(topic, message.getBytes(), 0, false);
                 } catch (MqttException e) {
                     e.printStackTrace();
                 }
+                Intent i = new Intent(Carpool_act.this,Loader_act.class);
+                startActivity(i);
             }
         });
 
