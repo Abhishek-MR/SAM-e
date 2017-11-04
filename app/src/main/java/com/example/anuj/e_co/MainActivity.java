@@ -45,6 +45,12 @@ import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 import com.yalantis.phoenix.PullToRefreshView;
 
+import org.eclipse.paho.android.service.MqttAndroidClient;
+import org.eclipse.paho.client.mqttv3.IMqttActionListener;
+import org.eclipse.paho.client.mqttv3.IMqttToken;
+import org.eclipse.paho.client.mqttv3.MqttClient;
+import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
+import org.eclipse.paho.client.mqttv3.MqttException;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -81,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
     private static final int REQUEST_SELECT_PLACE = 1000;
 
 
-    public String named="User",cname;
+    public String named="User",cname,rkey;
     public int seeds = 0,amount=0;
 
     public String currentDateTime;
@@ -89,6 +95,21 @@ public class MainActivity extends AppCompatActivity {
 
     int tryname=0;
 
+    //mqtt
+
+    String host = "tcp://m12.cloudmqtt.com:11871";
+    // String clientId = "ExampleAndroidClient";
+    String topic = "sensor/snd";
+
+    String username = "zyekiwpb";
+    String password = "z58Alb-SFL-_";
+
+    MqttAndroidClient client;
+    IMqttToken token = null;
+    MqttConnectOptions options;
+
+    String off = "off";
+    String on="on";
 
     private TextToSpeech tts;
     private ArrayList<String> questions;
@@ -114,6 +135,43 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        String clientId = MqttClient.generateClientId();
+        client = new MqttAndroidClient(this.getApplicationContext(), host, clientId);
+
+        options = new MqttConnectOptions();
+        options.setUserName(username);
+        options.setPassword(password.toCharArray());
+
+        try {
+            token = client.connect(options);
+        } catch (MqttException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            token = client.connect(options);
+            token.setActionCallback(new IMqttActionListener() {
+                @Override
+                public void onSuccess(IMqttToken asyncActionToken) {
+                    // We are connected
+                    Toast.makeText(getApplicationContext(),"Connection successful",Toast.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
+                    // Something went wrong e.g. connection timeout or firewall problems
+                    Toast.makeText(getApplicationContext(),"Connection failed",Toast.LENGTH_SHORT).show();
+
+                }
+            });
+        } catch (MqttException e) {
+            e.printStackTrace();
+        }
+
+
+
+
 
         //ass
         preferences = getSharedPreferences(PREFS,0);
@@ -188,6 +246,8 @@ public class MainActivity extends AppCompatActivity {
 
         }
 
+        SharedPreferences cd = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+        rkey= cd.getString("key", "");
 
         SharedPreferences gh = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
          usnm1 = gh.getString("key", " ");
@@ -593,6 +653,45 @@ public class MainActivity extends AppCompatActivity {
 
         if(text.contains("what is my name")){
             speak("Your name is "+preferences.getString(NAME,null));
+        }
+
+        if(text.contains("on")&&text.contains("light")){
+
+            if(rkey.equals("off")) {
+
+                try {
+                    client.publish(topic, on.getBytes(), 0, false);
+                } catch (MqttException e) {
+                    e.printStackTrace();
+                }
+                speak("Light switched on");
+                SharedPreferences cd = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+                cd.edit().putString("key", "on").apply();
+            }
+            else
+                speak("It is already on");
+        }
+
+        if(text.contains("connect")&&text.contains("home"))
+        {
+            qrScan.initiateScan();
+        }
+
+        if(text.contains("off")&&text.contains("light")){
+
+            if(rkey.equals("on")) {
+
+                try {
+                    client.publish(topic, off.getBytes(), 0, false);
+                } catch (MqttException e) {
+                    e.printStackTrace();
+                }
+                speak("Light switched off");
+                SharedPreferences cd = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+                cd.edit().putString("key", "off").apply();
+            }
+            else
+                speak("It is already off");
         }
     }
 
