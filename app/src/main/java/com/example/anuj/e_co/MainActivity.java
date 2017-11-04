@@ -100,6 +100,7 @@ public class MainActivity extends AppCompatActivity {
     private static final String NAME = "name";
     private static final String AGE = "age";
     private static final String AS_NAME = "as_name";
+    String usnm1, usnm2,useed1,useed2,ret;
 
 
 
@@ -189,15 +190,15 @@ public class MainActivity extends AppCompatActivity {
 
 
         SharedPreferences gh = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-        String usnm1 = gh.getString("key", "");
+         usnm1 = gh.getString("key", " ");
         SharedPreferences ij = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-        String useed1 = ij.getString("key", "");
+         useed1 = ij.getString("key", " ");
         SharedPreferences kl = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-        String usnm2 = kl.getString("key", "");
+         usnm2 = kl.getString("key", " ");
         SharedPreferences mn = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-        String useed2 = mn.getString("key", "");
+         useed2 = mn.getString("key", " ");
         SharedPreferences ef = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-        String ret= ef.getString("key", "");
+        ret= ef.getString("key", " ");
         Toast.makeText(getApplicationContext(),named,Toast.LENGTH_SHORT).show();
 
         homestat = (TextView) findViewById(R.id.txt_original_date);
