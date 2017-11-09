@@ -70,7 +70,8 @@
         <activity android:name=".Tips" />
         <activity android:name=".Loader_act" />
         <activity android:name=".Connecting_act" />
-        <activity android:name=".PayAct"></activity>
+        <activity android:name=".PayAct" />
+        <activity android:name=".QR_rcv"></activity>
     </application>
 
 </manifest>

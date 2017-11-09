@@ -40,13 +40,13 @@
         android:layout_below="@id/repay"
         android:orientation="vertical"
         android:layout_marginTop="50dp"
-        android:id="@+id/rerec"
         tools:layout_editor_absoluteX="8dp"
         tools:layout_editor_absoluteY="8dp">
 
         <at.markushi.ui.CircleButton
             android:layout_width="150dp"
             android:layout_height="150dp"
+            android:id="@+id/rerec"
             app:cb_color="@color/material_color_blue_500"
             app:cb_pressedRingWidth="8dip" />
         <TextView

@@ -190,7 +190,7 @@ public class ServiceChat extends Service {
                 // Set Ticker Message
                 .setTicker(getString(R.string.notificationticker))
                 // Set Title
-                .setContentTitle("Bla blah wants to carpool.")
+                .setContentTitle("Anuj wants to carpool.")
                 // Set Text
                 .setContentText(getString(R.string.notificationtext))
                 .addAction(R.drawable.cast_ic_notification_0, "Accept", pIntent)

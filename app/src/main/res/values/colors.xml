@@ -5,6 +5,14 @@
     <color name="colorAccent">@color/material_color_green_400</color>
     <color name="poly">#304FFE</color>
 
+    <color name="colorPrimary1">#1C1038</color>
+    <color name="colorPrimaryDark1">#1C1038</color>
+    <color name="colorAccent1">@color/material_color_green_400</color>
+    <color name="poly1">#304FFE</color>
+
     <color name="colorBackground">#241445</color>
     <color name="separatorColor">#18102C</color>
+
+    <color name="colorBackground1">#241445</color>
+    <color name="separatorColor1">#18102C</color>
 </resources>

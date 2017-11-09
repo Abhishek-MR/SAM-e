@@ -1,6 +1,7 @@
 package com.example.anuj.e_co.EcoService;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.media.RingtoneManager;
 import android.net.Uri;
@@ -14,15 +15,39 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.anuj.e_co.R;
+
+import org.eclipse.paho.android.service.MqttAndroidClient;
+import org.eclipse.paho.client.mqttv3.IMqttActionListener;
+import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
+import org.eclipse.paho.client.mqttv3.IMqttToken;
+import org.eclipse.paho.client.mqttv3.MqttCallback;
+import org.eclipse.paho.client.mqttv3.MqttClient;
+import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
+import org.eclipse.paho.client.mqttv3.MqttException;
+import org.eclipse.paho.client.mqttv3.MqttMessage;
+import org.eclipse.paho.client.mqttv3.MqttSecurityException;
 
 import java.util.concurrent.TimeUnit;
 
 
 public class DialogAct extends AppCompatActivity {
 
-    private long timeCountInMilliSeconds = 5 * 60000;
+    String host = "tcp://m12.cloudmqtt.com:11871";
+    // String clientId = "ExampleAndroidClient";
+    String topic = "sensor/snd";
+
+    String username = "zyekiwpb";
+    String password = "z58Alb-SFL-_";
+
+    MqttAndroidClient client;
+    IMqttToken token = null;
+    MqttConnectOptions options;
+
+
+    private long timeCountInMilliSeconds = 3 * 60000;
 
     public MediaPlayer mp;
 
@@ -44,10 +69,83 @@ public class DialogAct extends AppCompatActivity {
     final Context context = this;
     private Button button;
 
+
+    private SharedPreferences preferences;
+    private SharedPreferences.Editor editor;
+    private static final String PREFS = "prefs";
+    private static final String HOMESEED = "seed";
+
     public void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dialog);
+
+
+        //ass
+        preferences = getSharedPreferences(PREFS,0);
+        editor = preferences.edit();
+
+
+        //MQTT
+
+
+        String clientId = MqttClient.generateClientId();
+        client = new MqttAndroidClient(this.getApplicationContext(), host, clientId);
+
+        options = new MqttConnectOptions();
+        options.setUserName(username);
+        options.setPassword(password.toCharArray());
+
+        try {
+            token = client.connect(options);
+        } catch (MqttException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            token = client.connect(options);
+            token.setActionCallback(new IMqttActionListener() {
+                @Override
+                public void onSuccess(IMqttToken asyncActionToken) {
+                    // We are connected
+                    Toast.makeText(getApplicationContext(),"Connection successful",Toast.LENGTH_SHORT).show();
+                    subscribtion();
+                }
+
+                @Override
+                public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
+                    // Something went wrong e.g. connection timeout or firewall problems
+                    Toast.makeText(getApplicationContext(),"Connection failed",Toast.LENGTH_SHORT).show();
+
+                }
+            });
+        } catch (MqttException e) {
+            e.printStackTrace();
+        }
+
+        client.setCallback(new MqttCallback() {
+            @Override
+            public void connectionLost(Throwable cause) {
+
+            }
+
+            @Override
+            public void messageArrived(String topic, MqttMessage message) throws Exception {
+                Toast.makeText(getApplicationContext(),new String(message.getPayload()),Toast.LENGTH_SHORT).show();
+
+            }
+
+            @Override
+            public void deliveryComplete(IMqttDeliveryToken token) {
+
+            }
+        });
+
+
+        //MQTT
+
+
+
 
         button = (Button) findViewById(R.id.buttonShowCustomDialog);
 
@@ -90,6 +188,22 @@ public class DialogAct extends AppCompatActivity {
                     public void onClick(View v) {
                         dialog.dismiss();
                         mp.stop();
+                        Toast.makeText(getApplicationContext(),"You have lost 3 seeds because of negligence",Toast.LENGTH_SHORT).show();
+                        String message = "offy47tfj";
+
+                        try {
+                            client.publish(topic, message.getBytes(), 0, false);
+                        } catch (MqttException e) {
+                            e.printStackTrace();
+                        }
+                        editor.putInt(HOMESEED,preferences.getInt(HOMESEED,0)-3).apply();
+                        String message2 = "seedand "+preferences.getInt(HOMESEED,0);
+                        try {
+                            client.publish(topic, message2.getBytes(), 0, false);
+                        } catch (MqttException e) {
+                            e.printStackTrace();
+                        }
+
                         finish();
 
 
@@ -102,6 +216,16 @@ public class DialogAct extends AppCompatActivity {
             }
         });
         button.callOnClick();
+    }
+
+    private void subscribtion(){
+        try {
+            client.subscribe(topic,0);
+        } catch (MqttSecurityException e) {
+            e.printStackTrace();
+        } catch (MqttException e) {
+            e.printStackTrace();
+        }
     }
 
 
@@ -137,7 +261,7 @@ public class DialogAct extends AppCompatActivity {
      * method to initialize the values for count down timer
      */
     private void setTimerValues() {
-        int time = 5;
+        int time = 3;
 
         // assigning values after converting to milliseconds
         timeCountInMilliSeconds = time * 60 * 1000;
@@ -166,6 +290,22 @@ public class DialogAct extends AppCompatActivity {
                 setProgressBarValues();
                 // hiding the reset icon
                 // changing stop icon to start icon
+
+                Toast.makeText(getApplicationContext(),"You have lost 5 seeds because of negligence",Toast.LENGTH_SHORT).show();
+
+                String message = "off5";
+                try {
+                    client.publish(topic, message.getBytes(), 0, false);
+                } catch (MqttException e) {
+                    e.printStackTrace();
+                }
+                editor.putInt(HOMESEED,preferences.getInt(HOMESEED,0)-5).apply();
+                String message2 = "seedand "+preferences.getInt(HOMESEED,0);
+                try {
+                    client.publish(topic, message2.getBytes(), 0, false);
+                } catch (MqttException e) {
+                    e.printStackTrace();
+                }
 
                 // making edit text editable
                 editTextMinute.setEnabled(true);

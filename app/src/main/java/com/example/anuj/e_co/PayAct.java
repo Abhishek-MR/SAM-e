@@ -30,7 +30,14 @@ public class PayAct extends AppCompatActivity {
         findViewById(R.id.repay2).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                qrScan.initiateScan();
+            }
+        });
 
+        findViewById(R.id.rerec).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(PayAct.this,QR_rcv.class));
             }
         });
 

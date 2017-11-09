@@ -581,6 +581,7 @@ public class MainActivity extends AppCompatActivity {
             {
                 speak("Hello "+preferences.getString(NAME,null)+", you are given 300 seeds to start with." );
                 seeds=seeds+300;
+                editor.putInt(SEEDS,seeds).apply();
                 txtseeds.setText(""+seeds);
 
             }

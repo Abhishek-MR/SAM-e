@@ -3,6 +3,7 @@ package com.example.anuj.e_co;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.speech.tts.TextToSpeech;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
 
@@ -22,6 +23,8 @@ public class CarAct extends AppCompatActivity {
     private static final String USER2S = "s_name";
     private static final String DRIVE = "ame";
 
+    private TextToSpeech tts;
+
     TextView drivestat;
     TextView drivetxt;
 
@@ -38,8 +41,7 @@ public class CarAct extends AppCompatActivity {
 
         String txt=preferences.getString(DRIVE,"dsf");
 
-        while(true)
-        {
+
             drivestat.setText("Driving");
             if(txt=="c1")
             {
@@ -58,6 +60,4 @@ public class CarAct extends AppCompatActivity {
             }
 
         }
-
-    }
 }
