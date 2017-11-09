@@ -17,7 +17,10 @@ import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.eclipse.paho.client.mqttv3.MqttSecurityException;
 
-public class Connecting_act extends AppCompatActivity {
+public class
+
+
+Connecting_act extends AppCompatActivity {
 
     String host = "tcp://m11.cloudmqtt.com:16201";
     // String clientId = "ExampleAndroidClient";
