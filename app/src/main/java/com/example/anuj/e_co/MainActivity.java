@@ -191,7 +191,9 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.fab).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                listen();
+               // listen();
+                Intent i = new Intent(MainActivity.this,Assistant_act.class);
+                startActivity(i);
             }
         });
 
@@ -205,7 +207,7 @@ public class MainActivity extends AppCompatActivity {
                     if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
                         Log.e("TTS", "This Language is not supported");
                     }
-                    speak("Hello");
+                  //  speak("Hello");
 
 
                 } else {

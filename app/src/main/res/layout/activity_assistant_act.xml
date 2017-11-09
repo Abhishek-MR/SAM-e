@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#33BBFFFF"
+    tools:context="com.example.anuj.e_co.Assistant_act">
+
+    <com.wang.avi.AVLoadingIndicatorView
+        android:id="@+id/avi"
+        android:layout_width="100dp"
+    android:layout_height="100dp"
+    style="@style/AVLoadingIndicatorView"
+    android:visibility="visible"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+    app:indicatorName="LineScalePulseOutIndicator"
+    app:indicatorColor="@color/cast_libraries_material_featurehighlight_outer_highlight_default_color"
+    />
+
+
+</RelativeLayout>

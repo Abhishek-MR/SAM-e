@@ -8,6 +8,7 @@
     <uses-permission android:name="android.permission.BATTERY_STATS" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
 
     <application
         android:allowBackup="true"
@@ -71,7 +72,11 @@
         <activity android:name=".Loader_act" />
         <activity android:name=".Connecting_act" />
         <activity android:name=".PayAct" />
-        <activity android:name=".QR_rcv"></activity>
+        <activity android:name=".QR_rcv" />
+        <activity android:name=".Assistant_act"
+            android:theme="@style/Translucent">
+
+        </activity>
     </application>
 
 </manifest>
