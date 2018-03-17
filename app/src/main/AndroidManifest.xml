@@ -76,7 +76,24 @@
         <activity android:name=".Assistant_act"
             android:theme="@style/Translucent">
 
+
         </activity>
+        <activity android:name=".IrisMain" />
+
+        <activity android:name=".Seekbar_act" />
+
+        <activity
+            android:name="com.thefinestartist.finestwebview.FinestWebViewActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="sensor"
+            android:theme="@style/FinestWebViewTheme.Light" />
+
+
+
+        <service android:name="org.eclipse.paho.android.service.MqttService" >
+        </service>
+        <service android:name=".ServiceIris" >
+        </service>
     </application>
 
 </manifest>

@@ -3,5 +3,8 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
 
+
+    <dimen name="button_size">72dip</dimen>
+
     <dimen name="card_padding">60dp</dimen>
 </resources>

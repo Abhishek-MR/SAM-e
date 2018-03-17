@@ -19,21 +19,21 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 import butterknife.ButterKnife;
-import butterknife.InjectView;
+import butterknife.BindView;
 import butterknife.OnClick;
 
 
 public class Login_act extends AppCompatActivity {
 
-    @InjectView(R.id.et_username)
+    @BindView(R.id.et_username)
     EditText etUsername;
-    @InjectView(R.id.et_password)
+    @BindView(R.id.et_password)
     EditText etPassword;
-    @InjectView(R.id.bt_go)
+    @BindView(R.id.bt_go)
     Button btGo;
-    @InjectView(R.id.cv)
+    @BindView(R.id.cv)
     CardView cv;
-    @InjectView(R.id.fab)
+    @BindView(R.id.fab)
     FloatingActionButton fab;
     String name;
 
@@ -41,7 +41,7 @@ public class Login_act extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_act);
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
 
 
     }

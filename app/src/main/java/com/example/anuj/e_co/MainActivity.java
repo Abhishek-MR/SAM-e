@@ -11,7 +11,9 @@ import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.provider.AlarmClock;
+import android.speech.RecognitionListener;
 import android.speech.RecognizerIntent;
+import android.speech.SpeechRecognizer;
 import android.speech.tts.TextToSpeech;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.v4.app.ActivityCompat;
@@ -43,6 +45,8 @@ import com.example.anuj.e_co.DatabaseTransaction.PersonDatabaseHelper;
 import com.example.anuj.e_co.EcoService.BatteryService;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
+import com.thefinestartist.finestwebview.FinestWebView;
+import com.wang.avi.AVLoadingIndicatorView;
 import com.yalantis.phoenix.PullToRefreshView;
 
 import org.eclipse.paho.android.service.MqttAndroidClient;
@@ -61,7 +65,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements RecognitionListener {
 
     BottomSheetBehavior mBottomSheetBehavior;
     TextView swipe,txtname,txtseeds;
@@ -97,21 +101,20 @@ public class MainActivity extends AppCompatActivity {
 
     //mqtt
 
-    String host = "tcp://m12.cloudmqtt.com:11871";
+    String host = "tcp://m13.cloudmqtt.com:13476";
     // String clientId = "ExampleAndroidClient";
-    String topic = "sensor/snd";
+    String topic = "top";
 
-    String username = "zyekiwpb";
-    String password = "z58Alb-SFL-_";
+    String username = "ptbelqhi";
+    String password = "wdJXMPWzv6Q5";
 
     MqttAndroidClient client;
     IMqttToken token = null;
     MqttConnectOptions options;
 
-    String off = "off";
-    String on="on";
+    String off = "OFF";
+    String on="ON";
 
-    private TextToSpeech tts;
     private ArrayList<String> questions;
     private String name, surname, age, asName;
     private SharedPreferences preferences;
@@ -123,6 +126,11 @@ public class MainActivity extends AppCompatActivity {
     private static final String AS_NAME = "as_name";
     String usnm1, usnm2,useed1,useed2,ret,pname,pamt;
 
+    private SpeechRecognizer speech = null;
+    private Intent recognizerIntent;
+    private TextToSpeech tts;
+    private AVLoadingIndicatorView avi;
+
 
 
     public static float dpToPixels(int dp, Context context) {
@@ -132,7 +140,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)  {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -150,6 +158,34 @@ public class MainActivity extends AppCompatActivity {
             seeds = seeds - amount;
             store();
         }*/
+
+        speech = SpeechRecognizer.createSpeechRecognizer(this);
+        speech.setRecognitionListener(this);
+        recognizerIntent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+        recognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_PREFERENCE,"en");
+        recognizerIntent.putExtra(RecognizerIntent.EXTRA_CALLING_PACKAGE,this.getPackageName());
+        recognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,RecognizerIntent.LANGUAGE_MODEL_WEB_SEARCH);
+        recognizerIntent.putExtra(RecognizerIntent.EXTRA_MAX_RESULTS, 3);
+
+        tts = new TextToSpeech(this, new TextToSpeech.OnInitListener() {
+            @Override
+            public void onInit(int status) {
+                if (status == TextToSpeech.SUCCESS) {
+                    int result = tts.setLanguage(Locale.US);
+                    if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
+                        Log.e("TTS", "This Language is not supported");
+                    }
+
+
+                } else {
+                    Log.e("TTS", "Initilization Failed!");
+                }
+            }
+        });
+
+        avi= (AVLoadingIndicatorView) findViewById(R.id.avi);
+        avi.hide();
+
         options = new MqttConnectOptions();
         options.setUserName(username);
         options.setPassword(password.toCharArray());
@@ -191,9 +227,10 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.fab).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               // listen();
-                Intent i = new Intent(MainActivity.this,Assistant_act.class);
-                startActivity(i);
+                // listen();
+                avi.show();
+                avi.isActivated();
+                speech.startListening(recognizerIntent);
             }
         });
 
@@ -207,7 +244,7 @@ public class MainActivity extends AppCompatActivity {
                     if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
                         Log.e("TTS", "This Language is not supported");
                     }
-                  //  speak("Hello");
+                    //  speak("Hello");
 
 
                 } else {
@@ -259,8 +296,9 @@ public class MainActivity extends AppCompatActivity {
 
         }
 
+        /*
         SharedPreferences cd = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-        rkey= cd.getString("key", "");
+        //rkey= cd.getString("key", " ").toString();
 
         SharedPreferences gh = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
          usnm1 = gh.getString("key", " ");
@@ -273,7 +311,7 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences ef = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
         ret= ef.getString("key", " ");
         Toast.makeText(getApplicationContext(),named,Toast.LENGTH_SHORT).show();
-
+*/
         homestat = (TextView) findViewById(R.id.txt_original_date);
         swipe =(TextView)findViewById(R.id.swipe);
         maincard=(CardView)findViewById(R.id.maincard);
@@ -410,6 +448,8 @@ public class MainActivity extends AppCompatActivity {
         allItems.add(new BottomSheetItemObject("Recyclers", R.drawable.ic_sync_black_24dp));
         allItems.add(new BottomSheetItemObject("Home", R.drawable.ic_home_black_24dp));
         allItems.add(new BottomSheetItemObject("Vehicle", R.drawable.ic_airline_seat_recline_normal_black_24dp));
+        allItems.add(new BottomSheetItemObject("Security", R.drawable.secc));
+
 
         return allItems;
     }
@@ -436,10 +476,10 @@ public class MainActivity extends AppCompatActivity {
     public void  load()
     {
 
-            named = preferences.getString(NAME, null);
-            seeds = preferences.getInt(SEEDS, 0);
-            txtseeds.setText(String.valueOf(seeds));
-            txtname.setText(named);
+        named = preferences.getString(NAME, null);
+        seeds = preferences.getInt(SEEDS, 0);
+        txtseeds.setText(String.valueOf(seeds));
+        txtname.setText(named);
     }
 
     public void store()
@@ -527,6 +567,8 @@ public class MainActivity extends AppCompatActivity {
             tts.stop();
             tts.shutdown();
         }
+        if(avi.isActivated())
+            avi.hide();
         super.onDestroy();
     }
 
@@ -540,27 +582,23 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    private void recognition(String text){
+    private void recognition(String text) {
 
-        Log.e("Speech",""+text);
+        Log.e("Speech", "" + text);
         String[] speech = text.split(" ");
-        if(text.contains("hello")){
+        if (text.contains("hello")) {
             speak(questions.get(0));
             listen();
         }
 
-        if(tryname==1)
-        {
-            if (text.contains("yes"))
-            {
-                speak("Hello "+preferences.getString(NAME,null)+", you are given 300 seeds to start with." );
-                seeds=seeds+300;
-                editor.putInt(SEEDS,seeds).apply();
-                txtseeds.setText(""+seeds);
+        if (tryname == 1) {
+            if (text.contains("yes")) {
+                speak("Hello " + preferences.getString(NAME, null) + ", you are given 300 seeds to start with.");
+                seeds = seeds + 300;
+                editor.putInt(SEEDS, seeds).apply();
+                txtseeds.setText("" + seeds);
 
-            }
-            else if (text.contains("no"))
-            {
+            } else if (text.contains("no")) {
                 speak(questions.get(0));
                 listen();
             }
@@ -568,38 +606,38 @@ public class MainActivity extends AppCompatActivity {
 
 
         //
-        if(text.contains("my name is")){
-            named = speech[speech.length-1];
+        if (text.contains("my name is")) {
+            named = speech[speech.length - 1];
             Log.e("THIS", "" + named);
-            editor.putString(NAME,named).apply();
-            speak("Is your name "+preferences.getString(NAME,null)+" ?" );
-            txtname.setText(preferences.getString(NAME,null)
+            editor.putString(NAME, named).apply();
+            speak("Is your name " + preferences.getString(NAME, null) + " ?");
+            txtname.setText(preferences.getString(NAME, null)
             );
-            tryname=1;
+            tryname = 1;
             listen();
 
 
         }
         //This must be the age
-        if(text.contains("years") && text.contains("old")){
-            String age = speech[speech.length-3];
+        if (text.contains("years") && text.contains("old")) {
+            String age = speech[speech.length - 3];
             Log.e("THIS", "" + age);
             editor.putString(AGE, age).apply();
         }
 
-        if(text.contains("what time is it")){
+        if (text.contains("what time is it")) {
             SimpleDateFormat sdfDate = new SimpleDateFormat("HH:mm");//dd/MM/yyyy
             Date now = new Date();
             String[] strDate = sdfDate.format(now).split(":");
-            if(strDate[1].contains("00"))
+            if (strDate[1].contains("00"))
                 strDate[1] = "o'clock";
             speak("The time is " + sdfDate.format(now));
 
         }
 
-        if(text.contains("wake me up at")){
-            speak(speech[speech.length-1]);
-            String[] time = speech[speech.length-1].split(":");
+        if (text.contains("wake me up at")) {
+            speak(speech[speech.length - 1]);
+            String[] time = speech[speech.length - 1].split(":");
             String hour = time[0];
             String minutes = time[1];
             Intent i = new Intent(AlarmClock.ACTION_SET_ALARM);
@@ -609,66 +647,70 @@ public class MainActivity extends AppCompatActivity {
             speak("Setting alarm to ring at " + hour + ":" + minutes);
         }
 
-        if(text.contains("thank you")){
+        if (text.contains("thank you")) {
             speak("Thank you too " + preferences.getString(NAME, null));
         }
 
-        if(text.contains("how old am I")){
-            speak("You are "+preferences.getString(AGE,null)+" years old.");
+        if (text.contains("how old am I")) {
+            speak("You are " + preferences.getString(AGE, null) + " years old.");
         }
 
-        if(text.contains("what is your name")){
-                speak("I am your Eco buddy");
+        if (text.contains("what is your name")) {
+            speak("I am your Eco buddy");
         }
 
-        if(text.contains("call you")){
-            String name = speech[speech.length-1];
-            editor.putString(AS_NAME,name).apply();
-            speak("I like it, thank you "+preferences.getString(NAME,null));
+        if (text.contains("call you")) {
+            String name = speech[speech.length - 1];
+            editor.putString(AS_NAME, name).apply();
+            speak("I like it, thank you " + preferences.getString(NAME, null));
         }
 
-        if(text.contains("what is my name")){
-            speak("Your name is "+preferences.getString(NAME,null));
+        if (text.contains("what is my name")) {
+            speak("Your name is " + preferences.getString(NAME, null));
         }
 
-        if(text.contains("on")&&text.contains("light")){
+        if (text.contains("on") && text.contains("light")) {
 
-            if(rkey.equals("off")) {
+            if (rkey.equals("off")) {
 
                 try {
-                    client.publish(topic, on.getBytes(), 0, false);
+                    client.publish(topic, on.getBytes(), 2, false);
                 } catch (MqttException e) {
                     e.printStackTrace();
                 }
                 speak("Light switched on");
                 SharedPreferences cd = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
                 cd.edit().putString("key", "on").apply();
-            }
-            else
+            } else
                 speak("It is already on");
         }
 
-        if(text.contains("connect")&&text.contains("home"))
-        {
+        if (text.contains("connect") && text.contains("home")) {
             qrScan.initiateScan();
         }
 
-        if(text.contains("off")&&text.contains("light")){
+        if (text.contains("off") && text.contains("light")) {
 
-            if(rkey.equals("on")) {
+            if (rkey.equals("on")) {
 
                 try {
-                    client.publish(topic, off.getBytes(), 0, false);
+                    client.publish(topic, off.getBytes(), 2, false);
+                    Toast.makeText(getApplicationContext(), "On", Toast.LENGTH_SHORT).show();
+
                 } catch (MqttException e) {
                     e.printStackTrace();
                 }
                 speak("Light switched off");
                 SharedPreferences cd = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
                 cd.edit().putString("key", "off").apply();
-            }
-            else
+            } else
                 speak("It is already off");
         }
+
+
+
+
+
     }
 
     void wait4inp()
@@ -682,4 +724,157 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onReadyForSpeech(Bundle params) {
+
+    }
+
+    @Override
+    public void onBeginningOfSpeech() {
+
+    }
+
+    @Override
+    public void onRmsChanged(float rmsdB) {
+
+    }
+
+    @Override
+    public void onBufferReceived(byte[] buffer) {
+
+    }
+
+    @Override
+    public void onEndOfSpeech() {
+
+
+            avi.hide();
+    }
+
+    @Override
+    public void onError(int error) {
+
+
+            avi.hide();
+    }
+
+    @Override
+    public void onResults(Bundle results) {
+
+        ArrayList<String> matches = results.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
+        String text = "";
+
+            avi.hide();
+        //  for (String result : matches)
+        text = matches.get(0);
+        if(text.contains("what time is it")){
+            SimpleDateFormat sdfDate = new SimpleDateFormat("HH:mm");//dd/MM/yyyy
+            Date now = new Date();
+            String[] strDate = sdfDate.format(now).split(":");
+            if(strDate[1].contains("00"))
+                strDate[1] = "o'clock";
+            speak("The time is " + sdfDate.format(now));
+
+        }
+
+        else if(text.contains("on")&&text.contains("light")){
+            Toast.makeText(getBaseContext(),"on",Toast.LENGTH_SHORT).show();
+
+            try {
+                client.publish(topic, on.getBytes(), 2, false);
+            } catch (MqttException e) {
+                e.printStackTrace();
+            }
+            speak("Light switched on");
+            SharedPreferences cd = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+            cd.edit().putString("key", "on").apply();
+
+        }
+
+        else if(text.contains("off")&&text.contains("light")){
+
+            Toast.makeText(getBaseContext(),"off",Toast.LENGTH_SHORT).show();
+
+
+            try {
+                client.publish(topic, off.getBytes(), 2, false);
+            } catch (MqttException e) {
+                e.printStackTrace();
+            }
+            speak("Light switched of");
+            SharedPreferences cd = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+            cd.edit().putString("key", "off").apply();
+
+        }
+
+
+        else {
+            //tts.speak("You have said something that I did not understand, I will try to learn as I grow up!", TextToSpeech.QUEUE_FLUSH, null);
+            if (text.contains("search")) {
+                String s = text.substring(text.lastIndexOf("search") + 6, text.length());
+                s = s.replace(" ", "+");
+                s = "https://www.google.co.in/search?q=" + s;
+                tts.speak("The web has returned following result", TextToSpeech.QUEUE_FLUSH, null);
+                new FinestWebView.Builder(MainActivity.this).titleDefault("Search")
+                        .toolbarScrollFlags(0)
+                        .titleColorRes(R.color.colorPrimary)
+                        .statusBarColorRes(R.color.colorPrimary1)
+                        .toolbarColorRes(R.color.colorPrimaryDark)
+                        .iconDefaultColorRes(R.color.colorPrimaryDark1)
+                        .progressBarColorRes(R.color.colorPrimary)
+                        .menuSelector(R.drawable.selector_light_theme)
+                        .dividerHeight(0)
+                        .webViewBuiltInZoomControls(true)
+                        .webViewDisplayZoomControls(true)
+                        .webViewJavaScriptEnabled(true)
+                        .showSwipeRefreshLayout(true)
+                        .gradientDivider(false)
+                        .setCustomAnimations(R.anim.fade_in_medium, R.anim.fade_out_medium, R.anim.fade_in_medium, R.anim.fade_out_medium)
+                        .disableIconBack(false)
+                        .disableIconClose(false)
+                        .disableIconForward(false)
+                        .disableIconMenu(false)
+                        .show(s);
+            } else {
+                String s = text;
+                s = s.replace(" ", "+");
+                s = "https://www.google.co.in/search?q=" + s;
+                tts.speak("The web has returned following result", TextToSpeech.QUEUE_FLUSH, null);
+                new FinestWebView.Builder(MainActivity.this).titleDefault("Search")
+                        .toolbarScrollFlags(0)
+                        .titleColorRes(R.color.colorPrimaryDark)
+                        .statusBarColorRes(R.color.colorPrimary1)
+                        .toolbarColorRes(R.color.colorPrimary1)
+                        .iconDefaultColorRes(R.color.colorPrimaryDark1)
+                        .progressBarColorRes(R.color.colorPrimary)
+                        .menuSelector(R.drawable.selector_light_theme)
+                        .dividerHeight(0)
+                        .webViewBuiltInZoomControls(true)
+                        .webViewDisplayZoomControls(true)
+                        .webViewJavaScriptEnabled(true)
+                        .showSwipeRefreshLayout(true)
+                        .gradientDivider(false)
+                        .setCustomAnimations(R.anim.fade_in_medium, R.anim.fade_out_medium, R.anim.fade_in_medium, R.anim.fade_out_medium)
+                        .disableIconBack(false)
+                        .disableIconClose(false)
+                        .disableIconForward(false)
+                        .disableIconMenu(false)
+                        .show(s);
+            }
+        }
+
+
+
+
+    }
+
+    @Override
+    public void onPartialResults(Bundle partialResults) {
+
+    }
+
+    @Override
+    public void onEvent(int eventType, Bundle params) {
+
+    }
 }

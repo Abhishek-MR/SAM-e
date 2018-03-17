@@ -1,0 +1,58 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:background="@color/black_overlay"
+    tools:context="com.example.anuj.iris_test.IrisMain">
+
+
+    <EditText
+        android:id="@+id/addr"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="http://192.168.xxx.xxx:8090" />
+
+    <VideoView
+        android:id="@+id/streamview"
+        android:layout_width="match_parent"
+        android:layout_height="280dp" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+        <SeekBar
+            android:id="@+id/seekBar2"
+            style="@style/Widget.AppCompat.SeekBar.Discrete"
+            android:layout_width="368dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/sticky_switch"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="57dp"
+            android:max="10"
+            android:progress="3"
+            tools:layout_editor_absoluteX="8dp"
+            tools:layout_editor_absoluteY="282dp"/>
+
+        <io.ghyeok.stickyswitch.widget.StickySwitch
+            android:id="@+id/sticky_switch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="14dp"
+
+            app:ss_animationDuration="600"
+            app:ss_animationType="line"
+            app:ss_iconPadding="18dp"
+            app:ss_iconSize="22dp"
+            app:ss_leftText="OFF"
+            app:ss_rightText="ON"
+            app:ss_selectedTextSize="14sp"
+            app:ss_textSize="12sp" />
+
+    </RelativeLayout>
+</LinearLayout>

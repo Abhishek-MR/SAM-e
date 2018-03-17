@@ -18,6 +18,7 @@ public class CouponsCardPagerAdapter extends PagerAdapter implements CouponsCard
     private List<CouponsCardItem> mData;
     private float mBaseElevation;
 
+
     public CouponsCardPagerAdapter() {
         mData = new ArrayList<>();
         mViews = new ArrayList<>();

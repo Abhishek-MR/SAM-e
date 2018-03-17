@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.example.anuj.e_co.CarAct;
 import com.example.anuj.e_co.Carpool_act;
 import com.example.anuj.e_co.HomeAccount;
+import com.example.anuj.e_co.IrisMain;
 import com.example.anuj.e_co.R;
 import com.example.anuj.e_co.Recycler_act;
 
@@ -50,6 +51,9 @@ public class BottomSheetRecyclerViewHolder extends RecyclerView.ViewHolder imple
             case 3 :
                 context.startActivity(new Intent(context,CarAct.class));
                 break;
+            case 4:
+                context.startActivity(new Intent(context,IrisMain.class));
+
 
 
         }

@@ -3,6 +3,7 @@ package com.example.anuj.e_co.Coupons;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.CardView;
 import android.view.View;
+import android.widget.Toast;
 
 
 public class CouponsShadowTransformer implements ViewPager.OnPageChangeListener, ViewPager.PageTransformer {
@@ -100,7 +101,7 @@ public class CouponsShadowTransformer implements ViewPager.OnPageChangeListener,
 
     @Override
     public void onPageSelected(int position) {
-
+      
     }
 
     @Override
