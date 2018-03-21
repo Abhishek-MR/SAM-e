@@ -11,6 +11,8 @@ import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.Toast;
 
+import com.example.anuj.e_co.EcoService.BatteryService;
+
 import org.eclipse.paho.android.service.MqttAndroidClient;
 import org.eclipse.paho.client.mqttv3.IMqttActionListener;
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
@@ -54,7 +56,6 @@ public class ServiceIris extends Service {
 
         String clientId = MqttClient.generateClientId();
         client = new MqttAndroidClient(this.getApplicationContext(), host, clientId);
-
         options = new MqttConnectOptions();
         options.setUserName(username);
         options.setPassword(password.toCharArray());

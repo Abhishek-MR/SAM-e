@@ -2,22 +2,36 @@
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
 
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_content"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true">
 
-    <android.support.design.widget.FloatingActionButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/fab"
-        android:layout_marginLeft="170dp"
-        android:layout_marginTop="30dp"
-        android:layout_centerInParent="true"
-        android:src="@drawable/ic_assistant_black_24dp"
-        app:rippleColor="@color/material_color_green_700"
-        android:background="@color/material_color_green_400"
-        />
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true"
+        tools:context=".MainActivity">
+
+        <android.support.design.widget.AppBarLayout android:layout_height="wrap_content"
+            android:layout_width="match_parent" android:theme="@style/AppTheme.AppBarOverlay">
+
+
+        </android.support.design.widget.AppBarLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        </RelativeLayout>
+    </LinearLayout>
+
+
+
 
 
     <LinearLayout
@@ -25,436 +39,381 @@
         android:orientation="vertical"
         android:layout_height="match_parent">
 
-    <android.support.v7.widget.Toolbar
-        android:layout_width="match_parent"
-        android:background="@color/colorBackground"
-        android:id="@+id/toolbar"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark"
-        android:layout_height="@dimen/material_app_bar_default_height">
-
-
-
-
-
-    </android.support.v7.widget.Toolbar>
-
-
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/separatorColor"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
-
-
-        <RelativeLayout
+        <android.support.v7.widget.Toolbar
+            app:title=""
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:background="@color/colorBackground"
+            android:id="@+id/toolbar"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark"
+            android:layout_height="@dimen/material_app_bar_default_height">
 
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:paddingBottom="80dp">
 
-
-
-            <android.support.v7.widget.CardView
-                android:id="@+id/maincard"
-                android:layout_width="match_parent"
-                android:layout_height="230dp"
-                android:layout_marginLeft="@dimen/material_card_edge_margin"
-                android:layout_marginRight="@dimen/material_card_edge_margin"
-                android:layout_marginTop="13dp"
-                android:foreground="?android:attr/selectableItemBackground"
-                app:cardBackgroundColor="@color/material_color_white"
-                app:cardCornerRadius="@dimen/material_card_corner_radius"
-                app:cardElevation="@dimen/cardview_default_elevation"
-                app:cardUseCompatPadding="true"
-                app:contentPadding="@dimen/material_card_actions_row_padding"
-                >
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    >
-
-
-
-                    <TextView
-                        android:id="@+id/txt_day_name"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Hello"
-                        android:textColor="@color/material_color_deep_purple_500"
-                        android:textSize="@dimen/material_typography_regular_title_text_size"
-
-
-                        />
-
-                    <TextView
-                        android:id="@+id/txt_name"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/txt_day_name"
-                        android:text="Abhishek"
-                        android:textColor="@color/material_color_deep_purple_500"
-                        android:textSize="@dimen/material_typography_regular_title_text_size"
-                        />
-
-                    <TextView
-                        android:id="@+id/txt_original_date"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentEnd="true"
-                        android:layout_alignParentRight="true"
-                        android:layout_marginTop="5dp"
-                        android:text="Not connected to home"
-                        android:textColor="@color/material_color_deep_purple_500"
-                        android:textSize="@dimen/material_card_supporting_text_text_size"
-                        />
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentBottom="true"
-                        android:layout_alignParentEnd="true"
-                        android:layout_alignParentRight="true"
-                        android:gravity="right"
-                        android:orientation="vertical"
-                        >
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentEnd="true"
-                            android:padding="5dp"
-                            android:id="@+id/qr"
-                            android:layout_marginLeft="320dp"
-                            android:background="@drawable/ic_center_focus_weak_black_24dp"
-                            />
-
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:background="@drawable/ic_monetization_on_black_24dp"
-                            android:id="@+id/payment"
-                            />
-
-                        <TextView
-                            android:id="@+id/txt_seeds"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="350"
-                            android:textAppearance="?android:attr/textAppearanceLarge"
-                            android:textColor="@color/material_color_green_400"
-                            android:textSize="50dp"
-                            />
-
-                        <TextView
-                            android:id="@+id/txt_chance_rain"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="seeds"
-                            android:textColor="@color/material_color_deep_purple_500"
-                            android:textSize="@dimen/material_card_supporting_text_text_size"
-                            />
-
-                    </LinearLayout>
-
-                    <ImageView
-                        android:id="@+id/image_weather"
-                        android:layout_width="120dp"
-                        android:layout_height="120dp"
-                        android:layout_alignParentBottom="true"
-                        android:src="@drawable/seed"
-                        />
-
-
-
-                </RelativeLayout>
-
-            </android.support.v7.widget.CardView>
-
-            <android.support.v7.widget.CardView
-                android:id="@+id/quotecard"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/material_card_edge_margin"
-                android:layout_marginRight="@dimen/material_card_edge_margin"
-                android:foreground="?android:attr/selectableItemBackground"
-                app:cardBackgroundColor="@color/material_color_white"
-                app:cardCornerRadius="@dimen/material_card_corner_radius"
-                app:cardElevation="@dimen/cardview_default_elevation"
-                app:cardUseCompatPadding="true"
-                app:contentPadding="@dimen/material_card_actions_row_padding"
-                >
-                <com.tomer.fadingtextview.FadingTextView
-                    android:id="@+id/fadingTextView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:textColor="@color/material_color_deep_purple_500"
-                    android:textSize="15sp"
-                    app:texts="@array/examples"
-                    app:timeout="2000" />
-
-
-            </android.support.v7.widget.CardView>
-
-            <android.support.v7.widget.CardView
-                android:id="@+id/homecard"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/material_card_edge_margin"
-                android:layout_marginRight="@dimen/material_card_edge_margin"
-                android:foreground="?android:attr/selectableItemBackground"
-                app:cardBackgroundColor="@color/material_color_white"
-                app:cardCornerRadius="@dimen/material_card_corner_radius"
-                app:cardElevation="@dimen/cardview_default_elevation"
-                app:cardUseCompatPadding="true"
-                app:contentPadding="@dimen/material_card_actions_row_padding"
-                >
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical">
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Home"
-                            android:textColor="@color/material_color_deep_purple_400"
-                            android:textStyle="bold"/>
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentEnd="true"
-                            android:id="@+id/hseed"
-                            android:text="100 seeds"
-                            android:textColor="@color/material_color_deep_purple_400"
-                            />
-
-                    </RelativeLayout>
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        >
-
-                        <TextView
-                            android:id="@+id/user1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="user1"
-                            android:textColor="@color/material_color_deep_purple_400"
-                            />
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentEnd="true"
-                            android:text="100"
-                            android:id="@+id/seed1"
-                            android:textColor="@color/material_color_deep_purple_400"
-                            />
-
-                    </RelativeLayout>
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="6dp"
-                        >
-
-                        <TextView
-                            android:id="@+id/user2"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="user2"
-                            android:textColor="@color/material_color_deep_purple_400"
-                            />
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentEnd="true"
-                            android:text="100"
-                            android:id="@+id/seed2"
-                            android:textColor="@color/material_color_deep_purple_400"
-                            />
-
-                    </RelativeLayout>
-
-
-                </LinearLayout>
-
-
-            </android.support.v7.widget.CardView>
-
-
-            <android.support.v7.widget.CardView
-                android:id="@+id/transcard"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/material_card_edge_margin"
-                android:layout_marginRight="@dimen/material_card_edge_margin"
-                android:foreground="?android:attr/selectableItemBackground"
-                app:cardBackgroundColor="@color/material_color_white"
-                app:cardCornerRadius="@dimen/material_card_corner_radius"
-                app:cardElevation="@dimen/cardview_default_elevation"
-                app:cardUseCompatPadding="true"
-                app:contentPadding="@dimen/material_card_actions_row_padding"
-                >
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Transactions"
-                        android:textColor="@color/material_color_deep_purple_500"
-                        android:textStyle="bold"
-                        />
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:text="Click to see ransactions"
-                        android:textColor="@color/material_color_deep_purple_500"/>
-
-                </LinearLayout>
-
-
-            </android.support.v7.widget.CardView>
-
-            <android.support.v7.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/material_card_edge_margin"
-                android:layout_marginRight="@dimen/material_card_edge_margin"
-                android:foreground="?android:attr/selectableItemBackground"
-                app:cardBackgroundColor="@color/material_color_white"
-                app:cardCornerRadius="@dimen/material_card_corner_radius"
-                app:cardElevation="@dimen/cardview_default_elevation"
-                app:cardUseCompatPadding="true"
-                app:contentPadding="@dimen/material_card_actions_row_padding">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="10dp"
-                        android:text="Coupons"
-                        android:textColor="@color/material_color_deep_purple_500"
-                        android:textStyle="bold"
-                        />
-
-            <android.support.v4.view.ViewPager
-                android:id="@+id/viewPager"
-                android:layout_width="match_parent"
-                android:layout_height="240dp"
-                android:layout_gravity="bottom"
-                android:clipToPadding="false"
-                android:overScrollMode="never"
-                android:paddingBottom="30dp"
-                android:paddingEnd="60dp"
-                android:paddingLeft="60dp"
-                android:paddingRight="60dp"
-                android:paddingStart="60dp" />
-
-                </LinearLayout>
-
-            </android.support.v7.widget.CardView>
-
-
-
-        </LinearLayout>
-
-            <com.wang.avi.AVLoadingIndicatorView
-                android:id="@+id/avi"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                style="@style/AVLoadingIndicatorView"
-                android:visibility="visible"
-                android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true"
-                app:indicatorName="LineScalePulseOutIndicator"
-                app:indicatorColor="@color/cast_libraries_material_featurehighlight_outer_highlight_default_color"
-                />
-
-            </RelativeLayout>
-
-    </ScrollView>
-
-
-    </LinearLayout>
-
-
-    <android.support.v4.widget.NestedScrollView
-        android:id="@+id/bottom_sheet"
-        android:layout_width="match_parent"
-        android:layout_height="485dp"
-        android:alpha="0.98"
-        android:background="@drawable/rounded_corners"
-        android:elevation="@dimen/material_bottom_sheet_elevation"
-        android:paddingRight="16dp"
-        android:paddingLeft="16dp"
-        android:paddingBottom="16dp"
-        android:paddingTop="5dp"
-        app:layout_behavior="android.support.design.widget.BottomSheetBehavior"
-        >
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:src="@drawable/ic_expand_less_black_24dp"
-                />
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginBottom="20dp">
+                android:gravity="center_vertical">
+
+                <android.support.v7.widget.AppCompatImageView
+                    android:id="@+id/guillotine_hamburger"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:padding="5dp"
+                    android:layout_centerVertical="true"
+                    android:scaleType="centerInside"
+                    app:srcCompat="@drawable/menu_2"
+                    />
 
                 <TextView
-                    android:id="@+id/swipe"
                     android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
+                    android:layout_height="40dp"
                     android:layout_centerInParent="true"
-                    android:gravity="center"
-                    android:text="Explore"
-                    android:textColor="@color/material_color_grey_600"
-                    android:textSize="12dp"/>
-
+                    android:textSize="20dp"
+                    android:gravity="center_vertical"
+                    android:text="@string/app_name"/>
 
             </RelativeLayout>
 
 
 
-            <!-- Sheet-->
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/recycler_view"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:scrollbars="vertical" />
-        </LinearLayout>
+        </android.support.v7.widget.Toolbar>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/cntnt">
 
-    </android.support.v4.widget.NestedScrollView>
+            <ScrollView
+                android:id="@+id/scrollView"
+                android:layout_width="match_parent"
+                android:layout_height="600dp"
+                android:background="@color/separatorColor"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior"
+               >
+
+
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        >
+
+
+                        <android.support.v7.widget.CardView
+                            android:id="@+id/quotecard"
+                            android:layout_width="match_parent"
+                            android:layout_height="230dp"
+                            android:layout_marginLeft="@dimen/material_card_edge_margin"
+                            android:layout_marginRight="@dimen/material_card_edge_margin"
+                            android:layout_marginTop="13dp"
+                            android:foreground="?android:attr/selectableItemBackground"
+                            app:cardBackgroundColor="@color/material_color_white"
+                            app:cardCornerRadius="@dimen/material_card_corner_radius"
+                            app:cardElevation="@dimen/cardview_default_elevation"
+                            app:cardUseCompatPadding="true"
+                            app:contentPadding="@dimen/material_card_actions_row_padding"
+                            >
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                >
+
+
+
+                                <TextView
+                                    android:id="@+id/txt_day_name"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Hello"
+                                    android:textColor="@color/material_color_deep_purple_500"
+                                    android:textSize="@dimen/material_typography_regular_title_text_size"
+
+
+                                    />
+
+                                <TextView
+                                    android:id="@+id/txt_name"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@+id/txt_day_name"
+                                    android:text="Abhishek"
+                                    android:textColor="@color/material_color_deep_purple_500"
+                                    android:textSize="@dimen/material_typography_regular_title_text_size"
+                                    />
+
+                                <TextView
+                                    android:id="@+id/txt_original_date"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentEnd="true"
+                                    android:layout_alignParentRight="true"
+                                    android:layout_marginTop="5dp"
+                                    android:text="Not connected to home"
+                                    android:textColor="@color/material_color_deep_purple_500"
+                                    android:textSize="@dimen/material_card_supporting_text_text_size"
+                                    />
+
+                                <LinearLayout
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentBottom="true"
+                                    android:layout_alignParentEnd="true"
+                                    android:layout_alignParentRight="true"
+                                    android:gravity="right"
+                                    android:orientation="vertical"
+                                    >
+                                    <ImageView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_alignParentEnd="true"
+                                        android:padding="5dp"
+                                        android:id="@+id/qr"
+                                        android:layout_marginLeft="320dp"
+                                        android:background="@drawable/ic_center_focus_weak_black_24dp"
+                                        />
+
+                                    <ImageView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:background="@drawable/ic_monetization_on_black_24dp"
+                                        android:id="@+id/payment"
+                                        />
+
+                                    <TextView
+                                        android:id="@+id/txt_seeds"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="350"
+                                        android:textAppearance="?android:attr/textAppearanceLarge"
+                                        android:textColor="@color/material_color_green_400"
+                                        android:textSize="50dp"
+                                        />
+
+                                    <TextView
+                                        android:id="@+id/txt_chance_rain"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="seeds"
+                                        android:textColor="@color/material_color_deep_purple_500"
+                                        android:textSize="@dimen/material_card_supporting_text_text_size"
+                                        />
+
+                                </LinearLayout>
+
+                                <ImageView
+                                    android:id="@+id/image_weather"
+                                    android:layout_width="120dp"
+                                    android:layout_height="120dp"
+                                    android:layout_alignParentBottom="true"
+                                    android:src="@drawable/seed"
+                                    />
+
+
+
+                            </RelativeLayout>
+
+                        </android.support.v7.widget.CardView>
+
+
+
+                        <android.support.v7.widget.CardView
+                            android:id="@+id/homecard"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/material_card_edge_margin"
+                            android:layout_marginRight="@dimen/material_card_edge_margin"
+                            android:foreground="?android:attr/selectableItemBackground"
+                            app:cardBackgroundColor="@color/material_color_white"
+                            app:cardCornerRadius="@dimen/material_card_corner_radius"
+                            app:cardElevation="@dimen/cardview_default_elevation"
+                            app:cardUseCompatPadding="true"
+                            app:contentPadding="@dimen/material_card_actions_row_padding"
+                            >
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:orientation="vertical">
+
+                                <RelativeLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content">
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="Home"
+                                        android:textColor="@color/material_color_deep_purple_400"
+                                        android:textStyle="bold"/>
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_alignParentEnd="true"
+                                        android:id="@+id/hseed"
+                                        android:text="100 seeds"
+                                        android:textColor="@color/material_color_deep_purple_400"
+                                        />
+
+                                </RelativeLayout>
+
+                                <RelativeLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="10dp"
+                                    >
+
+                                    <TextView
+                                        android:id="@+id/user1"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="user1"
+                                        android:textColor="@color/material_color_deep_purple_400"
+                                        />
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_alignParentEnd="true"
+                                        android:text="100"
+                                        android:id="@+id/seed1"
+                                        android:textColor="@color/material_color_deep_purple_400"
+                                        />
+
+                                </RelativeLayout>
+
+                                <RelativeLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="6dp"
+                                    >
+
+                                    <TextView
+                                        android:id="@+id/user2"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="user2"
+                                        android:textColor="@color/material_color_deep_purple_400"
+                                        />
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_alignParentEnd="true"
+                                        android:text="100"
+                                        android:id="@+id/seed2"
+                                        android:textColor="@color/material_color_deep_purple_400"
+                                        />
+
+                                </RelativeLayout>
+
+
+                            </LinearLayout>
+
+
+                        </android.support.v7.widget.CardView>
+
+
+
+                        <android.support.v7.widget.CardView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/material_card_edge_margin"
+                            android:layout_marginRight="@dimen/material_card_edge_margin"
+                            android:foreground="?android:attr/selectableItemBackground"
+                            app:cardBackgroundColor="@color/material_color_white"
+                            app:cardCornerRadius="@dimen/material_card_corner_radius"
+                            app:cardElevation="@dimen/cardview_default_elevation"
+                            app:cardUseCompatPadding="true"
+                            app:contentPadding="@dimen/material_card_actions_row_padding">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginBottom="10dp"
+                                    android:text="Coupons"
+                                    android:textColor="@color/material_color_deep_purple_500"
+                                    android:textStyle="bold"
+                                    />
+
+                                <android.support.v4.view.ViewPager
+                                    android:id="@+id/viewPager"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="240dp"
+                                    android:layout_gravity="bottom"
+                                    android:clipToPadding="false"
+                                    android:overScrollMode="never"
+                                    android:paddingBottom="30dp"
+                                    android:paddingEnd="60dp"
+                                    android:paddingLeft="60dp"
+                                    android:paddingRight="60dp"
+                                    android:paddingStart="60dp" />
+
+                            </LinearLayout>
+
+                        </android.support.v7.widget.CardView>
+
+
+
+
+
+                    </LinearLayout>
+
+                    <com.wang.avi.AVLoadingIndicatorView
+                        android:id="@+id/avi"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        style="@style/AVLoadingIndicatorView"
+                        android:visibility="visible"
+                        android:layout_centerHorizontal="true"
+                        android:layout_centerVertical="true"
+                        app:indicatorName="LineScalePulseOutIndicator"
+                        app:indicatorColor="@color/cast_libraries_material_featurehighlight_outer_highlight_default_color"
+                        />
+
+                </RelativeLayout>
+
+            </ScrollView>
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:id="@+id/mic"
+                android:layout_below="@+id/scrollView"
+                >
+                <com.skyfishjy.library.RippleBackground
+                    xmlns:android="http://schemas.android.com/apk/res/android"
+                    xmlns:app="http://schemas.android.com/apk/res-auto"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/content"
+                    app:rb_color="#35b40a"
+                    app:rb_radius="32dp"
+                    app:rb_rippleAmount="10"
+                    app:rb_duration="5000"
+
+                    app:rb_scale="6">
+                    <ImageView
+                        android:layout_width="64dp"
+                        android:layout_height="64dp"
+                        android:layout_centerInParent="true"
+                        android:id="@+id/fab"
+                        android:src="@drawable/micc"/>
+                </com.skyfishjy.library.RippleBackground>
+
+            </RelativeLayout>
+        </RelativeLayout>
+    </LinearLayout>
+
 
 </android.support.design.widget.CoordinatorLayout>

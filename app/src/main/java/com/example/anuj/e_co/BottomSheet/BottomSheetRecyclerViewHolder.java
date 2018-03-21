@@ -18,6 +18,8 @@ import com.example.anuj.e_co.HomeAccount;
 import com.example.anuj.e_co.IrisMain;
 import com.example.anuj.e_co.R;
 import com.example.anuj.e_co.Recycler_act;
+import com.example.anuj.e_co.Seekbar_act;
+import com.example.anuj.e_co.ServiceIris;
 
 public class BottomSheetRecyclerViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
@@ -52,11 +54,10 @@ public class BottomSheetRecyclerViewHolder extends RecyclerView.ViewHolder imple
                 context.startActivity(new Intent(context,CarAct.class));
                 break;
             case 4:
-                context.startActivity(new Intent(context,IrisMain.class));
-
+                context.startActivity(new Intent(context, IrisMain.class));
+        }
 
 
         }
 
     }
-}

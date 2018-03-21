@@ -16,9 +16,14 @@ import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
 import android.speech.tts.TextToSpeech;
 import android.support.design.widget.BottomSheetBehavior;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
@@ -28,11 +33,15 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.GestureDetector.SimpleOnGestureListener;
+import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+import butterknife.BindView;
 
 import com.example.anuj.e_co.BottomSheet.BottomSheetItemObject;
 import com.example.anuj.e_co.BottomSheet.BottomSheetRecyclerViewAdapter;
@@ -43,8 +52,10 @@ import com.example.anuj.e_co.Coupons.CouponsCardPagerAdapter;
 import com.example.anuj.e_co.Coupons.CouponsShadowTransformer;
 import com.example.anuj.e_co.DatabaseTransaction.PersonDatabaseHelper;
 import com.example.anuj.e_co.EcoService.BatteryService;
+import com.example.anuj.e_co.topmenu.animation.GuillotineAnimation;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
+import com.skyfishjy.library.RippleBackground;
 import com.thefinestartist.finestwebview.FinestWebView;
 import com.wang.avi.AVLoadingIndicatorView;
 import com.yalantis.phoenix.PullToRefreshView;
@@ -65,12 +76,15 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class MainActivity extends AppCompatActivity implements RecognitionListener {
 
     BottomSheetBehavior mBottomSheetBehavior;
     TextView swipe,txtname,txtseeds;
     ImageView swipebut;
-    CardView maincard,quotecard,homecard,transcard;
+    CardView quotecard,homecard,transcard;
     private GridLayoutManager lLayout;
     private Button buybut;
     ImageView qrcsn,pay;
@@ -96,6 +110,8 @@ public class MainActivity extends AppCompatActivity implements RecognitionListen
 
     public String currentDateTime;
     public  TextView homestat,hseed,uname1,uname2,seed1,seed2;
+    public RippleBackground rippleBackground;
+
 
     int tryname=0;
 
@@ -115,6 +131,10 @@ public class MainActivity extends AppCompatActivity implements RecognitionListen
     String off = "OFF";
     String on="ON";
 
+    String unlock="UNLOCK";
+    String lock="LOCK";
+
+
     private ArrayList<String> questions;
     private String name, surname, age, asName;
     private SharedPreferences preferences;
@@ -131,6 +151,15 @@ public class MainActivity extends AppCompatActivity implements RecognitionListen
     private TextToSpeech tts;
     private AVLoadingIndicatorView avi;
 
+    private static final long RIPPLE_DURATION = 250;
+
+    @BindView(R.id.main_content)
+    CoordinatorLayout main_content;
+
+    @BindView(R.id.guillotine_hamburger)
+    View contentHamburger;
+
+
 
 
     public static float dpToPixels(int dp, Context context) {
@@ -144,8 +173,11 @@ public class MainActivity extends AppCompatActivity implements RecognitionListen
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        ButterKnife.bind(this);
         String clientId = MqttClient.generateClientId();
         client = new MqttAndroidClient(this.getApplicationContext(), host, clientId);
+
+
 
        /* SharedPreferences nm = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
         pname= nm.getString("name", " ");
@@ -158,6 +190,19 @@ public class MainActivity extends AppCompatActivity implements RecognitionListen
             seeds = seeds - amount;
             store();
         }*/
+
+        View guillotineMenu = LayoutInflater.from(getBaseContext()).inflate(R.layout.guillotine, null);
+        guillotineMenu.setLayoutParams(new CoordinatorLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        main_content.addView(guillotineMenu);
+
+        new GuillotineAnimation.GuillotineBuilder(guillotineMenu, guillotineMenu.findViewById(R.id.guillotine_hamburger), contentHamburger)
+                .setStartDelay(RIPPLE_DURATION)
+                .setActionBarViewForAnimation(toolbar)
+                .setClosedOnStart(true)
+                .build();
+
+
+
 
         speech = SpeechRecognizer.createSpeechRecognizer(this);
         speech.setRecognitionListener(this);
@@ -182,6 +227,7 @@ public class MainActivity extends AppCompatActivity implements RecognitionListen
                 }
             }
         });
+
 
         avi= (AVLoadingIndicatorView) findViewById(R.id.avi);
         avi.hide();
@@ -225,14 +271,36 @@ public class MainActivity extends AppCompatActivity implements RecognitionListen
         editor = preferences.edit();
 
         findViewById(R.id.fab).setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View v) {
-                // listen();
-                avi.show();
-                avi.isActivated();
-                speech.startListening(recognizerIntent);
+                rippleBackground=(RippleBackground)findViewById(R.id.content);
+                ImageView imageView=(ImageView)findViewById(R.id.fab);
+                imageView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        rippleBackground.startRippleAnimation();
+
+                        speech.startListening(recognizerIntent);
+
+
+                       // listen();
+                        // avi.show();
+                        //  Toast.makeText(getApplicationContext(),"speak",Toast.LENGTH_SHORT).show();
+                    }
+
+
+
+                });
+
+               // avi.isActivated();
+
             }
         });
+
+
+
+
 
         loadQuestions();
 
@@ -314,10 +382,8 @@ public class MainActivity extends AppCompatActivity implements RecognitionListen
 */
         homestat = (TextView) findViewById(R.id.txt_original_date);
         swipe =(TextView)findViewById(R.id.swipe);
-        maincard=(CardView)findViewById(R.id.maincard);
         quotecard=(CardView)findViewById(R.id.quotecard);
         homecard=(CardView)findViewById(R.id.homecard);
-        transcard=(CardView)findViewById(R.id.transcard);
         hseed=(TextView)findViewById(R.id.swipe);
         uname1 =(TextView)findViewById(R.id.swipe);
         uname2 =(TextView)findViewById(R.id.swipe);
@@ -353,9 +419,7 @@ public class MainActivity extends AppCompatActivity implements RecognitionListen
         BottomSheetRecyclerViewAdapter rcAdapter = new BottomSheetRecyclerViewAdapter(MainActivity.this, rowListItem);
         rView.setAdapter(rcAdapter);
 
-        View bottomSheet = findViewById( R.id.bottom_sheet );
-        mBottomSheetBehavior = BottomSheetBehavior.from(bottomSheet);
-        mBottomSheetBehavior.setPeekHeight(210);
+
 
 
 
@@ -403,12 +467,12 @@ public class MainActivity extends AppCompatActivity implements RecognitionListen
                 startActivity(new Intent(MainActivity.this,HomeAccount.class));
             }
         });
-        transcard.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this,TransAct.class));
-            }
-        });
+//        transcard.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                startActivity(new Intent(MainActivity.this,TransAct.class));
+//            }
+//        });
 
 
         //services
@@ -439,6 +503,8 @@ public class MainActivity extends AppCompatActivity implements RecognitionListen
 
 
     }
+
+
 
     private List<BottomSheetItemObject> getAllItemList(){
 
@@ -565,10 +631,14 @@ public class MainActivity extends AppCompatActivity implements RecognitionListen
     public void onDestroy() {
         if (tts != null) {
             tts.stop();
+
             tts.shutdown();
         }
-        if(avi.isActivated())
-            avi.hide();
+
+
+
+        // if(avi.isActivated())
+           // avi.hide();
         super.onDestroy();
     }
 
@@ -707,6 +777,38 @@ public class MainActivity extends AppCompatActivity implements RecognitionListen
                 speak("It is already off");
         }
 
+        if (text.contains("unlock") && text.contains("door")) {
+
+            if (rkey.equals("lock")) {
+
+                try {
+                    client.publish(topic, unlock.getBytes(), 2, false);
+                } catch (MqttException e) {
+                    e.printStackTrace();
+                }
+                speak("Door unlocked");
+                SharedPreferences cd2 = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+                cd2.edit().putString("key", "unlock").apply();
+            } else
+                speak("It is already unlocked");
+        }
+
+        if (text.contains("lock") && text.contains("door")) {
+
+            if (rkey.equals("unlock")) {
+
+                try {
+                    client.publish(topic, lock.getBytes(), 2, false);
+                } catch (MqttException e) {
+                    e.printStackTrace();
+                }
+                speak("Door locked");
+                SharedPreferences cd2 = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+                cd2.edit().putString("key", "lock").apply();
+            } else
+                speak("It is already locked");
+        }
+
 
 
 
@@ -749,17 +851,22 @@ public class MainActivity extends AppCompatActivity implements RecognitionListen
 
 
             avi.hide();
+
     }
 
     @Override
     public void onError(int error) {
 
 
-            avi.hide();
+            //avi.hide();.
+           if(rippleBackground.isRippleAnimationRunning()) rippleBackground.stopRippleAnimation();
+
     }
 
     @Override
     public void onResults(Bundle results) {
+
+        if(rippleBackground.isRippleAnimationRunning()) rippleBackground.stopRippleAnimation();
 
         ArrayList<String> matches = results.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
         String text = "";

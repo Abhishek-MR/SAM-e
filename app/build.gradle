@@ -87,6 +87,9 @@ dependencies {
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
     compile 'com.github.GwonHyeok:StickySwitch:0.0.13'
     compile 'com.thefinestartist:finestwebview:1.2.7'
+    compile 'com.mindorks:placeholderview:0.2.7'
+    compile 'com.skyfishjy.ripplebackground:library:1.0.1'
+
 
 
     testCompile 'junit:junit:4.12'
