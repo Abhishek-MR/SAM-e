@@ -37,12 +37,12 @@ public class ServiceIoT extends Service {
 
     int c1=0,c2=0,c3=0,c4=0;
 
-    String host = "tcp://m12.cloudmqtt.com:11871";
+    String host = "tcp://m10.cloudmqtt.com:16470";
     // String clientId = "ExampleAndroidClient";
-    String topic = "sensor/snd";
+    String topic = "pitoand";
 
-    String username = "zyekiwpb";
-    String password = "z58Alb-SFL-_";
+    String username = "btnuybpp";
+    String password = "lsuaT1jteJsV";
     MqttAndroidClient client;
     IMqttToken token = null;
     MqttConnectOptions options;
@@ -118,7 +118,7 @@ public class ServiceIoT extends Service {
             public void messageArrived(String topic, MqttMessage message) throws Exception {
                 String msg = new String(message.getPayload());
 
-                //Toast.makeText(getApplicationContext(),msg,Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(),msg,Toast.LENGTH_SHORT).show();
 
 
                     if (msg.equals("waste")) {

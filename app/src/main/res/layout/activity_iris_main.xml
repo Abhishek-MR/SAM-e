@@ -8,12 +8,6 @@
     tools:context="com.example.anuj.iris_test.IrisMain">
 
 
-    <EditText
-        android:id="@+id/addr"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="http://192.168.xxx.xxx:8090" />
-
     <VideoView
         android:id="@+id/streamview"
         android:layout_width="match_parent"
@@ -31,11 +25,11 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/sticky_switch"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="57dp"
+            android:layout_marginTop="27dp"
             android:max="10"
             android:progress="3"
             tools:layout_editor_absoluteX="8dp"
-            tools:layout_editor_absoluteY="282dp"/>
+            tools:layout_editor_absoluteY="282dp" />
 
         <io.ghyeok.stickyswitch.widget.StickySwitch
             android:id="@+id/sticky_switch"
@@ -52,7 +46,22 @@
             app:ss_leftText="OFF"
             app:ss_rightText="ON"
             app:ss_selectedTextSize="14sp"
-            app:ss_textSize="12sp" />
+            app:ss_textSize="12sp"
+            android:paddingBottom="20dp"/>
 
     </RelativeLayout>
+
+    <Button
+        android:id="@+id/angry_btn"
+        android:layout_marginTop="30dp"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@color/transparent_black_hex_aa"
+        android:shadowColor="#A8A8A8"
+        android:shadowDx="0"
+        android:shadowDy="0"
+        android:shadowRadius="5"
+        android:text="Add Person"
+        android:textColor="#FFFFFF" />
+
 </LinearLayout>

@@ -93,9 +93,9 @@ public class Assistant_act extends AppCompatActivity implements RecognitionListe
     public void onResults(Bundle results) {
         ArrayList<String> matches = results.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
         String text = "";
-      //  for (String result : matches)
+        //for (String result : matches)
             text = matches.get(0);
-        if(text.contains("what time is it")){
+        if(text.contains("what is the time")){
             SimpleDateFormat sdfDate = new SimpleDateFormat("HH:mm");//dd/MM/yyyy
             Date now = new Date();
             String[] strDate = sdfDate.format(now).split(":");

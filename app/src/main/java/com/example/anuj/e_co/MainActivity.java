@@ -1,14 +1,20 @@
 package com.example.anuj.e_co;
 
 import android.content.ActivityNotFoundException;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.media.Ringtone;
+import android.media.RingtoneManager;
 import android.net.ConnectivityManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.preference.PreferenceManager;
 import android.provider.AlarmClock;
 import android.speech.RecognitionListener;
@@ -20,6 +26,7 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
@@ -52,10 +59,12 @@ import com.example.anuj.e_co.Coupons.CouponsCardPagerAdapter;
 import com.example.anuj.e_co.Coupons.CouponsShadowTransformer;
 import com.example.anuj.e_co.DatabaseTransaction.PersonDatabaseHelper;
 import com.example.anuj.e_co.EcoService.BatteryService;
+import com.example.anuj.e_co.EcoService.DialogAct;
 import com.example.anuj.e_co.topmenu.animation.GuillotineAnimation;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 import com.skyfishjy.library.RippleBackground;
+import com.tapadoo.alerter.Alerter;
 import com.thefinestartist.finestwebview.FinestWebView;
 import com.wang.avi.AVLoadingIndicatorView;
 import com.yalantis.phoenix.PullToRefreshView;
@@ -63,9 +72,11 @@ import com.yalantis.phoenix.PullToRefreshView;
 import org.eclipse.paho.android.service.MqttAndroidClient;
 import org.eclipse.paho.client.mqttv3.IMqttActionListener;
 import org.eclipse.paho.client.mqttv3.IMqttToken;
+import org.eclipse.paho.client.mqttv3.MqttCallback;
 import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttException;
+import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -166,7 +177,50 @@ public class MainActivity extends AppCompatActivity implements RecognitionListen
         return dp * (context.getResources().getDisplayMetrics().density);
     }
 
+    BroadcastReceiver  BReceiver = new BroadcastReceiver(){
 
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            //put here whaterver you want your activity to do with the intent received
+
+            String msg = intent.getStringExtra("msg");
+
+            if(msg.equals("unknown"))
+            {
+                Alerter.create(MainActivity.this)
+                        .setTitle("Unknown Person Found")
+                        .setText("Click to view the livestream")
+                        .setBackgroundColorRes(R.color.Color_Red)
+
+                        .setDuration(10000)
+                        .setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                startActivity(new Intent(MainActivity.this,IrisMain.class));
+                            }
+                        })
+                        .show();
+            }
+
+            Toast.makeText(getBaseContext(),topic+":"+msg,Toast.LENGTH_SHORT).show();
+
+        }
+    };
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        LocalBroadcastManager.getInstance(this).registerReceiver(BReceiver, new IntentFilter("service_message"));
+
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(BReceiver);
+
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState)  {
@@ -176,6 +230,9 @@ public class MainActivity extends AppCompatActivity implements RecognitionListen
         ButterKnife.bind(this);
         String clientId = MqttClient.generateClientId();
         client = new MqttAndroidClient(this.getApplicationContext(), host, clientId);
+
+
+
 
 
 
@@ -284,7 +341,7 @@ public class MainActivity extends AppCompatActivity implements RecognitionListen
                         speech.startListening(recognizerIntent);
 
 
-                       // listen();
+                        // listen();
                         // avi.show();
                         //  Toast.makeText(getApplicationContext(),"speak",Toast.LENGTH_SHORT).show();
                     }
@@ -293,10 +350,13 @@ public class MainActivity extends AppCompatActivity implements RecognitionListen
 
                 });
 
-               // avi.isActivated();
+                // avi.isActivated();
 
             }
         });
+
+
+
 
 
 
@@ -481,6 +541,7 @@ public class MainActivity extends AppCompatActivity implements RecognitionListen
         startService(new Intent(getBaseContext(), BatteryService.class));
         startService(new Intent(getBaseContext(),ServiceIoT.class));
         startService(new Intent(getBaseContext(),ServiceChat.class));
+        startService(new Intent(getBaseContext(),MyService.class));
 
         pay = (ImageView) findViewById(R.id.payment);
         qrScan = new IntentIntegrator(this);
@@ -504,7 +565,14 @@ public class MainActivity extends AppCompatActivity implements RecognitionListen
 
     }
 
+    public void startService(View view) {
+        startService(new Intent(getBaseContext(), MyService.class));
+    }
 
+    // Method to stop the service
+    public void stopService(View view) {
+        stopService(new Intent(getBaseContext(), MyService.class));
+    }
 
     private List<BottomSheetItemObject> getAllItemList(){
 
@@ -519,6 +587,16 @@ public class MainActivity extends AppCompatActivity implements RecognitionListen
 
         return allItems;
     }
+
+
+
+
+
+
+
+
+
+
 
     public void func(View view)
     {
@@ -638,7 +716,7 @@ public class MainActivity extends AppCompatActivity implements RecognitionListen
 
 
         // if(avi.isActivated())
-           // avi.hide();
+        // avi.hide();
         super.onDestroy();
     }
 
@@ -703,6 +781,7 @@ public class MainActivity extends AppCompatActivity implements RecognitionListen
                 strDate[1] = "o'clock";
             speak("The time is " + sdfDate.format(now));
 
+
         }
 
         if (text.contains("wake me up at")) {
@@ -727,6 +806,9 @@ public class MainActivity extends AppCompatActivity implements RecognitionListen
 
         if (text.contains("what is your name")) {
             speak("I am your Eco buddy");
+        }
+        if (text.contains("what is your age")){
+            speak("I am still pretty new");
         }
 
         if (text.contains("call you")) {
@@ -783,6 +865,8 @@ public class MainActivity extends AppCompatActivity implements RecognitionListen
 
                 try {
                     client.publish(topic, unlock.getBytes(), 2, false);
+                    Toast.makeText(getApplicationContext(), "Unlock", Toast.LENGTH_SHORT).show();
+
                 } catch (MqttException e) {
                     e.printStackTrace();
                 }
@@ -799,6 +883,8 @@ public class MainActivity extends AppCompatActivity implements RecognitionListen
 
                 try {
                     client.publish(topic, lock.getBytes(), 2, false);
+                    Toast.makeText(getApplicationContext(), "lock", Toast.LENGTH_SHORT).show();
+
                 } catch (MqttException e) {
                     e.printStackTrace();
                 }
@@ -850,7 +936,7 @@ public class MainActivity extends AppCompatActivity implements RecognitionListen
     public void onEndOfSpeech() {
 
 
-            avi.hide();
+        avi.hide();
 
     }
 
@@ -858,23 +944,26 @@ public class MainActivity extends AppCompatActivity implements RecognitionListen
     public void onError(int error) {
 
 
-            //avi.hide();.
-           if(rippleBackground.isRippleAnimationRunning()) rippleBackground.stopRippleAnimation();
+        //avi.hide();.
+        if(rippleBackground.isRippleAnimationRunning()) rippleBackground.stopRippleAnimation();
 
     }
 
     @Override
     public void onResults(Bundle results) {
 
+
         if(rippleBackground.isRippleAnimationRunning()) rippleBackground.stopRippleAnimation();
 
         ArrayList<String> matches = results.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
         String text = "";
 
-            avi.hide();
+        avi.hide();
         //  for (String result : matches)
         text = matches.get(0);
-        if(text.contains("what time is it")){
+
+
+        if (text.contains("what is the time")){
             SimpleDateFormat sdfDate = new SimpleDateFormat("HH:mm");//dd/MM/yyyy
             Date now = new Date();
             String[] strDate = sdfDate.format(now).split(":");
@@ -883,6 +972,48 @@ public class MainActivity extends AppCompatActivity implements RecognitionListen
             speak("The time is " + sdfDate.format(now));
 
         }
+        else if(text.contains("what is your name")) {
+            speak("I am your Eco buddy");
+        }
+        else if(text.contains("what is your age")) {
+            speak("I am still pretty new");
+        }
+
+        else if (text.contains("unlock") && text.contains("door")) {
+
+
+
+                try {
+                    client.publish(topic, unlock.getBytes(), 2, false);
+                    Toast.makeText(getApplicationContext(), "Unlock", Toast.LENGTH_SHORT).show();
+
+                } catch (MqttException e) {
+                    e.printStackTrace();
+                }
+                speak("Door unlocked");
+                SharedPreferences cd2 = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+                cd2.edit().putString("key", "unlock").apply();
+
+        }
+
+        else if (text.contains("lock") && text.contains("door")) {
+
+
+
+                try {
+                    client.publish(topic, lock.getBytes(), 2, false);
+                    Toast.makeText(getApplicationContext(), "lock", Toast.LENGTH_SHORT).show();
+
+                } catch (MqttException e) {
+                    e.printStackTrace();
+                }
+                speak("Door locked");
+                SharedPreferences cd2 = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+                cd2.edit().putString("key", "lock").apply();
+
+                      }
+
+
 
         else if(text.contains("on")&&text.contains("light")){
             Toast.makeText(getBaseContext(),"on",Toast.LENGTH_SHORT).show();

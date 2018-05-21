@@ -17,10 +17,10 @@
         tools:layout_editor_absoluteY="8dp">
 
         <at.markushi.ui.CircleButton
-            android:layout_width="150dp"
+            android:id="@+id/repay2"
+            android:layout_width="384dp"
             android:layout_height="150dp"
             app:cb_color="#99CC00"
-            android:id="@+id/repay2"
             app:cb_pressedRingWidth="8dip" />
         <TextView
             android:layout_width="match_parent"
@@ -44,9 +44,9 @@
         tools:layout_editor_absoluteY="8dp">
 
         <at.markushi.ui.CircleButton
-            android:layout_width="150dp"
-            android:layout_height="150dp"
             android:id="@+id/rerec"
+            android:layout_width="378dp"
+            android:layout_height="150dp"
             app:cb_color="@color/material_color_blue_500"
             app:cb_pressedRingWidth="8dip" />
         <TextView

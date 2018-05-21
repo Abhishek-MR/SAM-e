@@ -56,8 +56,5 @@ public class BottomSheetRecyclerViewHolder extends RecyclerView.ViewHolder imple
             case 4:
                 context.startActivity(new Intent(context, IrisMain.class));
         }
-
-
-        }
-
     }
+}

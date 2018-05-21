@@ -4,11 +4,19 @@ package com.example.anuj.e_co;
  * Created by amogh on 19/3/18.
  */
 
+import android.app.Notification;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Typeface;
+import android.media.Ringtone;
+import android.media.RingtoneManager;
 import android.support.v7.app.AppCompatActivity;
+import android.text.InputType;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.MediaController;
@@ -17,6 +25,12 @@ import android.widget.Toast;
 import android.widget.VideoView;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Vibrator;
+
+
+import com.afollestad.materialdialogs.MaterialDialog;
+import com.irozon.sneaker.Sneaker;
+import com.tapadoo.alerter.Alerter;
 
 import org.eclipse.paho.android.service.MqttAndroidClient;
 import org.eclipse.paho.client.mqttv3.IMqttActionListener;
@@ -30,16 +44,17 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.eclipse.paho.client.mqttv3.MqttSecurityException;
 import org.jetbrains.annotations.NotNull;
 
+import br.com.goncalves.pugnotification.notification.PugNotification;
 import io.ghyeok.stickyswitch.widget.StickySwitch;
 
 public class IrisMain extends AppCompatActivity {
 
-    String host = "tcp://m13.cloudmqtt.com:13476";
+    String host = "tcp://m10.cloudmqtt.com:16470";
     // String clientId = "ExampleAndroidClient";
-    String topic = "top";
+    String topic = "andtopi";
 
-    String username = "ptbelqhi";
-    String password = "wdJXMPWzv6Q5";
+    String username = "btnuybpp";
+    String password = "lsuaT1jteJsV";
 
     MqttAndroidClient client;
     IMqttToken token = null;
@@ -55,74 +70,6 @@ public class IrisMain extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_iris_main);
-
-        seek2 = (SeekBar) findViewById(R.id.seekBar2);
-
-        //int flag=0;
-        seek2.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                String message = String.valueOf(progress);
-                try {
-                    Toast.makeText(getApplicationContext(),message,Toast.LENGTH_SHORT).show();
-                    client.publish(topic, message.getBytes(),0,false);
-                } catch (MqttException e) {
-                    e.printStackTrace();
-                }
-
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-
-            }
-        });
-
-
-
-        addrField = (EditText)findViewById(R.id.addr);
-        //  btnConnect = (Button)findViewById(R.id.connect);
-        streamView = (VideoView)findViewById(R.id.streamview);
-
-        StickySwitch stickySwitch = (StickySwitch) findViewById(R.id.sticky_switch);
-        stickySwitch.setOnSelectedChangeListener(new StickySwitch.OnSelectedChangeListener() {
-            @Override
-            public void onSelectedChange(@NotNull StickySwitch.Direction direction, @NotNull String text) {
-                Log.d("TAG", "Now Selected : " + direction.name() + ", Current Text : " + text);
-            }
-        });
-        stickySwitch.setOnSelectedChangeListener(new StickySwitch.OnSelectedChangeListener() {
-            @Override
-            public void onSelectedChange(StickySwitch.Direction direction, String s) {
-                if(direction== StickySwitch.Direction.LEFT)
-                {
-                    streamView.stopPlayback();
-
-                }
-                else {
-                    String sa = addrField.getEditableText().toString();
-
-                    playStream(sa);
-
-                }
-            }
-        });
-
-        //  btnConnect.setOnClickListener(new OnClickListener(){
-
-        //    @Override
-        //  public void onClick(View v) {
-
-
-        //    String s = addrField.getEditableText().toString();
-
-        //  playStream(s);
-        // }});
 
 
 
@@ -146,6 +93,11 @@ public class IrisMain extends AppCompatActivity {
                 public void onSuccess(IMqttToken asyncActionToken) {
                     // We are connected
                     Toast.makeText(getApplicationContext(),"    Connection successful",Toast.LENGTH_SHORT).show();
+                    try {
+                        client.publish(topic,"livestream".getBytes(),2,false);
+                    } catch (MqttException e) {
+                        e.printStackTrace();
+                    }
                     subscribtion();
                 }
 
@@ -178,6 +130,110 @@ public class IrisMain extends AppCompatActivity {
 
             }
         });
+
+
+
+
+        seek2 = (SeekBar) findViewById(R.id.seekBar2);
+
+        //int flag=0;
+        seek2.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                String message = String.valueOf(progress);
+                try {
+                    Toast.makeText(getApplicationContext(),message,Toast.LENGTH_SHORT).show();
+                    client.publish(topic, message.getBytes(),0,false);
+                } catch (MqttException e) {
+                    e.printStackTrace();
+                }
+
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+
+
+
+        //addrField = (EditText)findViewById(R.id.addr);
+        //  btnConnect = (Button)findViewById(R.id.connect);
+        streamView = (VideoView)findViewById(R.id.streamview);
+
+        StickySwitch stickySwitch = (StickySwitch) findViewById(R.id.sticky_switch);
+        stickySwitch.setOnSelectedChangeListener(new StickySwitch.OnSelectedChangeListener() {
+            @Override
+            public void onSelectedChange(@NotNull StickySwitch.Direction direction, @NotNull String text) {
+                Log.d("TAG", "Now Selected : " + direction.name() + ", Current Text : " + text);
+            }
+        });
+        stickySwitch.setOnSelectedChangeListener(new StickySwitch.OnSelectedChangeListener() {
+            @Override
+            public void onSelectedChange(StickySwitch.Direction direction, String s) {
+                if(direction== StickySwitch.Direction.LEFT)
+                {
+
+                    try {
+                        client.publish(topic,"stoplivestream".getBytes(),2,false);
+                    } catch (MqttException e) {
+                        e.printStackTrace();
+                    }
+                    streamView.stopPlayback();
+
+                }
+                else {
+                    String sa = "http://192.168.1.106:8090";
+
+                    playStream(sa);
+
+
+
+                }
+            }
+        });
+
+        //  btnConnect.setOnClickListener(new OnClickListener(){
+
+        //    @Override
+        //  public void onClick(View v) {
+
+
+        //    String s = addrField.getEditableText().toString();
+
+        //  playStream(s);
+        // }});
+
+
+
+        Button angryButton = (Button) findViewById(R.id.angry_btn);
+        angryButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                // input dialog for name
+                new MaterialDialog.Builder(IrisMain.this)
+                        .title("Name")
+                        .inputType(InputType.TYPE_CLASS_TEXT )
+                        .input("Name", "", new MaterialDialog.InputCallback() {
+                            @Override
+                            public void onInput(MaterialDialog dialog, CharSequence input) {
+                                input="savename:"+input;
+                                try {
+                                    client.publish(topic,input.toString().getBytes(),2,false);
+                                } catch (MqttException e) {
+                                    e.printStackTrace();
+                                }                            }
+                        }).show();
+// Click event trigger here
+            }
+        });
+
+
 
 
     }

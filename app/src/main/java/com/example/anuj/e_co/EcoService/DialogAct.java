@@ -109,6 +109,7 @@ public class DialogAct extends AppCompatActivity {
                 public void onSuccess(IMqttToken asyncActionToken) {
                     // We are connected
                     Toast.makeText(getApplicationContext(),"Connection successful",Toast.LENGTH_SHORT).show();
+
                     subscribtion();
                 }
 
